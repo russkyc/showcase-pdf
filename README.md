@@ -1,4 +1,4 @@
-﻿<img src=".github\images\frame.png" style="width: 100%;" />
+﻿<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/frame.png" style="width: 100%;" />
 
 <h2 align="center">Showcase PDF - Presentations with PDF!</h2>
 
