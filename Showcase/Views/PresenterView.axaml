@@ -46,9 +46,19 @@
                     Padding="5"
                     HorizontalAlignment="Stretch"
                     Command="{Binding OpenAboutCommand}">
+                    <ToolTip.Tip>
+                        <StackPanel>
+                            <TextBlock Text="About" />
+                        </StackPanel>
+                    </ToolTip.Tip>
                     <fluent:SymbolIcon Symbol="Info" />
                 </Button>
                 <Button Padding="5" HorizontalAlignment="Stretch">
+                    <ToolTip.Tip>
+                        <StackPanel>
+                            <TextBlock Text="Settings" />
+                        </StackPanel>
+                    </ToolTip.Tip>
                     <fluent:SymbolIcon Symbol="Settings" />
                 </Button>
             </StackPanel>
@@ -76,7 +86,7 @@
             </Grid>
             <Grid
                 Grid.Column="1"
-                Width="400"
+                Width="500"
                 Background="#171717">
                 <Grid
                     Margin="12,0,12,12"
@@ -89,7 +99,7 @@
                             VerticalAlignment="Center"
                             FontSize="18"
                             Foreground="#7D7D7D"
-                            Text="Presenter Notes" />
+                            Text="Slide Notes" />
                         <ToggleButton
                             x:Name="EditModeToggle"
                             Grid.Column="1"
@@ -107,10 +117,27 @@
                                 <TextBlock
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Text="Edit Mode" />
+                                    Text="Edit" />
                             </StackPanel>
                         </ToggleButton>
                     </Grid>
+                    <ScrollViewer Grid.Row="1" IsVisible="{Binding #EditModeToggle.IsChecked, Converter={x:Static BoolConverters.Not}}">
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="#505050"
+                                IsVisible="{Binding ActiveSlide.Notes, Converter={x:Static converters:NullOrWhitespaceToBoolConverter.Instance}, ConverterParameter={StaticResource False}}"
+                                Text="No notes for current slide" />
+                            <TextBlock
+                                VerticalAlignment="Top"
+                                FontSize="16"
+                                IsVisible="{Binding #EditModeToggle.IsChecked, Converter={x:Static BoolConverters.Not}}"
+                                Text="{Binding ActiveSlide.Notes}"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </ScrollViewer>
                     <TextBox
                         Grid.Row="1"
                         VerticalAlignment="Stretch"
@@ -118,9 +145,10 @@
                         FontSize="16"
                         IsEnabled="{Binding ActiveSlide, Converter={x:Static ObjectConverters.IsNotNull}}"
                         IsReadOnly="{Binding #EditModeToggle.IsChecked, Converter={x:Static BoolConverters.Not}}"
-                        Text="{Binding ActiveSlide.Annotations}"
+                        IsVisible="{Binding #EditModeToggle.IsChecked}"
+                        Text="{Binding ActiveSlide.Notes}"
                         TextWrapping="Wrap"
-                        Watermark="Toggle edit mode to add notes to this page." />
+                        Watermark="Enter slide notes here" />
                 </Grid>
             </Grid>
         </Grid>

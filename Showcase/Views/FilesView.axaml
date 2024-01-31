@@ -2,13 +2,11 @@
     x:Class="Showcase.Views.FilesView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
     xmlns:custom="clr-namespace:Showcase.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:entities="clr-namespace:Showcase.Models.Entities"
     xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:Showcase.Models"
     xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Title="Showcase PDF"
@@ -79,6 +77,19 @@
             Grid.Column="1"
             Margin="12"
             Spacing="12">
+            <Button
+                HorizontalAlignment="Stretch"
+                Command="{Binding OpenRecentCommand}"
+                IsEnabled="{Binding HasRecent}">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="SlideLayout" />
+                    <TextBlock HorizontalAlignment="Center" Text="Last Opened" />
+                </StackPanel>
+            </Button>
             <Button HorizontalAlignment="Stretch" Command="{Binding OpenFileCommand}">
                 <StackPanel
                     HorizontalAlignment="Center"
@@ -87,16 +98,6 @@
                     Spacing="6">
                     <fluent:SymbolIcon FontSize="18" Symbol="DocumentAdd" />
                     <TextBlock HorizontalAlignment="Center" Text="Import PDF" />
-                </StackPanel>
-            </Button>
-            <Button HorizontalAlignment="Stretch" IsEnabled="False">
-                <StackPanel
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="6">
-                    <fluent:SymbolIcon FontSize="18" Symbol="Settings" />
-                    <TextBlock HorizontalAlignment="Center" Text="Settings" />
                 </StackPanel>
             </Button>
         </StackPanel>

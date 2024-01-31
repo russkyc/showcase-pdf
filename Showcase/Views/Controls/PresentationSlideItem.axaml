@@ -40,7 +40,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         FontSize="13"
-                        IsVisible="{Binding Annotations, Mode=OneWay, Converter={x:Static converters:NullOrWhitespaceToBoolConverter.Instance}}"
+                        IsVisible="{Binding Notes, Mode=OneWay, Converter={x:Static converters:NullOrWhitespaceToBoolConverter.Instance}}"
                         Symbol="Notepad" />
                 </Grid>
             </StackPanel>

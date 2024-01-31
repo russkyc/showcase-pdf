@@ -31,8 +31,20 @@ public class NullOrWhitespaceToBoolConverter : IValueConverter
     public static NullOrWhitespaceToBoolConverter Instance = new();
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not string content) return false;
-        return !string.IsNullOrWhiteSpace(content);
+        if (value is not string content)
+        {
+            if (parameter is not bool invertOne)
+            {
+                return value is not null;
+            }
+            return invertOne ? value is not null : value is null;
+        }
+
+        if (parameter is not bool invert)
+        {
+            return !string.IsNullOrWhiteSpace(content);
+        }
+        return invert ? !string.IsNullOrWhiteSpace(content) : string.IsNullOrWhiteSpace(content);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

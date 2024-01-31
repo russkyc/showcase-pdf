@@ -20,23 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using Showcase.Models.Messages;
+using System;
+using System.Collections;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using FluentAvalonia.Core;
 
-namespace Showcase.Models.Entities;
+namespace Showcase.Utilities.Converters;
 
-public partial class ShowcaseSlide : ObservableObject
+public class EnumerableToHasAnyConverter : IValueConverter
 {
-    public int Page { get; set; }
-    public string PageSource { get; set; }
+    public static EnumerableToHasAnyConverter Instance = new();
     
-    [ObservableProperty] private string _notes;
-
-    partial void OnNotesChanged(string? value, string newValue)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is null || value.Equals(newValue)) return;
-        WeakReferenceMessenger.Default.Send(new SlideUpdatedMessage());
+        if (value is IEnumerable enumerable)
+        {
+            return enumerable.Count() > 0;
+        }
+
+        return false;
     }
-    
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return null;
+    }
 }

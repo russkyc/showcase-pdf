@@ -220,8 +220,5 @@ public partial class PresenterViewModel : ObservableObject
     {
         ActiveSlide = null;
         ActivePresentation = message.Value;
-        ActivePresentation.LastOpened = DateTime.Now;
-        
-        _presentationStore.UpdatePresentation(ActivePresentation);
     }
 }

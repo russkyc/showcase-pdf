@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,7 +46,8 @@ public partial class FilesViewModel : ObservableObject
     private readonly IPresentationStore _presentationStore;
 
     [ObservableProperty] private bool _importing;
-    [ObservableProperty] private ObservableCollection<ShowcasePresentation> _list = new();
+    [ObservableProperty] private bool _hasRecent;
+    [ObservableProperty] private ObservableCollection<ShowcasePresentation>? _list;
 
     public FilesViewModel(
         IPdfManager pdfManager,
@@ -59,6 +61,18 @@ public partial class FilesViewModel : ObservableObject
         List = _presentationStore
             .GetPresentations()
             .ToObservableCollection();
+
+        HasRecent = List.Any();
+    }
+
+    [RelayCommand]
+    async Task OpenRecent()
+    {
+        _windowFactory.CreatePresenterWindow();
+        
+        WeakReferenceMessenger
+            .Default
+            .Send(new PresentationOpenedMessage(List.First()));
     }
 
     [RelayCommand]
@@ -85,6 +99,8 @@ public partial class FilesViewModel : ObservableObject
         }
 
         Importing = true;
+        HasRecent = false;
+        
         var presentation = await _pdfManager.GetPresentation(files.First().Path.LocalPath);
         await _presentationStore.AddPresentation(presentation);
 
@@ -93,6 +109,8 @@ public partial class FilesViewModel : ObservableObject
             .ToObservableCollection();
 
         Importing = false;
+        HasRecent = true;
+        
         _windowFactory.CreatePresenterWindow();
 
         await Task.Delay(500);
@@ -103,12 +121,19 @@ public partial class FilesViewModel : ObservableObject
     }
 
     [RelayCommand]
-    async Task OpenPresentation(ShowcasePresentation pdfPresentation)
+    async Task OpenPresentation(ShowcasePresentation presentation)
     {
         _windowFactory.CreatePresenterWindow();
 
+        presentation.LastOpened = DateTime.Now;
+        await _presentationStore.UpdatePresentation(presentation);
+        
+        List = _presentationStore
+            .GetPresentations()
+            .ToObservableCollection();
+
         WeakReferenceMessenger
             .Default
-            .Send(new PresentationOpenedMessage(pdfPresentation));
+            .Send(new PresentationOpenedMessage(presentation));
     }
 }
