@@ -29,5 +29,5 @@ namespace Showcase.Services.PdfReader.Interfaces;
 public interface IPdfManager
 {
     Task<ShowcasePresentation> GetPresentation(string source);
-    Task<List<ShowcaseSlide>> GetSlidesAsync(ShowcasePresentation presentation);
+    Task<List<ShowcaseSlide>> GetSlidesAsync(ShowcasePresentation presentation, byte[] bytes);
 }

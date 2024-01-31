@@ -36,7 +36,9 @@ public class PresentationStore : IPresentationStore
 
     public IEnumerable<ShowcasePresentation> GetPresentations()
     {
-        return _dataStore.GetCollection<ShowcasePresentation>().AsQueryable();
+        return _dataStore.GetCollection<ShowcasePresentation>().AsQueryable()
+            .OrderByDescending(presentation => presentation.LastOpened)
+            .ThenByDescending(presentation => presentation.Created);
     }
 
     public async Task<bool> AddPresentation(ShowcasePresentation presentation)

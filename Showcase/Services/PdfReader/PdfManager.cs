@@ -49,23 +49,25 @@ public class PdfManager : IPdfManager
             presentation.DataFolder = @$"{Environment.CurrentDirectory}\Presentations\{name}\";
             
             var bytes = await File.ReadAllBytesAsync(source);
-            presentation.Data = bytes;
             
-            var slides = await GetSlidesAsync(presentation);
+            var slides = await GetSlidesAsync(presentation,bytes);
             presentation.PreviewSlide = slides[0];
             presentation.Slides = slides;
         });
+        
+        presentation.Created = DateTime.Now;
+        presentation.LastOpened = DateTime.Now;
 
         return presentation;
     }
 
 
-    public async Task<List<ShowcaseSlide>> GetSlidesAsync(ShowcasePresentation presentation)
+    public async Task<List<ShowcaseSlide>> GetSlidesAsync(ShowcasePresentation presentation, byte[] bytes)
     {
         List<ShowcaseSlide> slides = new List<ShowcaseSlide>();
         int page = 0;
 
-        await foreach (var skBitmap in Conversion.ToImagesAsync(presentation.Data, dpi: 200, withAspectRatio: true)
+        await foreach (var skBitmap in Conversion.ToImagesAsync(bytes, dpi: 200, withAspectRatio: true)
                            .ConfigureAwait(false))
         {
             presentation.DataFolder.CreateDirectoryIfNotExists();

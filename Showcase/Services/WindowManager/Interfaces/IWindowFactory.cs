@@ -24,7 +24,8 @@ namespace Showcase.Services.WindowManager.Interfaces;
 
 public interface IWindowFactory
 {
-    void CreatePresenterWindow(bool hideCurrent = false);
-    void CreateScreenWindow(bool hideCurrent = false);
-    void CreateStartupWindow(bool hideCurrent = false);
+    void CreatePresenterWindow();
+    void CreateScreenWindow(int display);
+    void CreateStartupWindow();
+    void CreateAboutWindow();
 }

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 
 namespace Showcase.Models.Entities;
@@ -27,10 +28,11 @@ namespace Showcase.Models.Entities;
 public class ShowcasePresentation
 {
     public int Id { get; set; }
+    public DateTime Created { get; set; }
+    public DateTime LastOpened { get; set; }
     public string Name { get; set; }
     public string Path { get; set; }
     public string Md5 { get; set; }
-    public byte[] Data { get; set; }
     public int Pages { get; set; }
     public string DataFolder { get; set; }
     public ShowcaseSlide PreviewSlide { get; set; }
