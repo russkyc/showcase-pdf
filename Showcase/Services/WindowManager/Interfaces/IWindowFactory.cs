@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+namespace Showcase.Services.WindowManager.Interfaces;
 
-namespace Showcase;
-
-public partial class App : Application
+public interface IWindowFactory
 {
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
-    }
+    void CreatePresenterWindow(bool hideCurrent = false);
+    void CreateScreenWindow(bool hideCurrent = false);
+    void CreateStartupWindow(bool hideCurrent = false);
 }

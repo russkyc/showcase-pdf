@@ -1,0 +1,57 @@
+﻿<UserControl
+    x:Class="Showcase.Controls.StartupPresentationListItem"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Showcase.Models"
+    xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
+    xmlns:views="clr-namespace:Showcase.Views"
+    d:DesignWidth="400"
+    x:DataType="entities:ShowcasePresentation"
+    mc:Ignorable="d">
+    <Button
+        Padding="0"
+        HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Stretch"
+        Background="Transparent"
+        BorderThickness="0"
+        Command="{Binding ((viewModels1:StartupViewModel)DataContext).OpenPresentationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=views:StartupView}}"
+        CommandParameter="{Binding}"
+        CornerRadius="0">
+        <Grid ColumnDefinitions="140,*" IsHitTestVisible="False">
+            <Grid Grid.Column="0" Background="Black">
+                <asyncImageLoader:AdvancedImage
+                    Grid.Column="0"
+                    MaxHeight="80"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Source="{Binding PreviewSlide.PageSource}"
+                    Stretch="Uniform"
+                    UseLayoutRounding="True" />
+            </Grid>
+            <Grid Column="1">
+                <StackPanel
+                    Margin="12"
+                    VerticalAlignment="Center"
+                    Spacing="4">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Text="{CompiledBinding Name}" />
+                    <TextBlock
+                        FontSize="12"
+                        Foreground="#606060"
+                        Text="{Binding Path}" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        FontSize="12"
+                        Foreground="#606060"
+                        Text="Last Week" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Button>
+</UserControl>

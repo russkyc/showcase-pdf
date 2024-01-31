@@ -1,0 +1,200 @@
+﻿<windowing:AppWindow
+    x:Class="Showcase.Views.PresenterView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Showcase.Views.Controls"
+    xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
+    xmlns:views="clr-namespace:Showcase.Views"
+    xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
+    Title="{Binding ActivePresentation.Name, Converter={x:Static converters:PresentationNameToWindowTitleConverter.Instance}}"
+    Width="1280"
+    Height="720"
+    MinWidth="950"
+    MinHeight="590"
+    x:DataType="viewModels1:PresenterViewModel"
+    Icon="/Assets/showcase-pdf-logo.ico"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    mc:Ignorable="d">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding PreviousCommand}" Gesture="Left" />
+        <KeyBinding Command="{Binding NextCommand}" Gesture="Right" />
+    </Window.KeyBindings>
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
+        <Grid
+            Grid.Row="0"
+            Margin="12"
+            ColumnDefinitions="Auto,*,Auto,Auto">
+            <Button
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                Command="{Binding OpenSelectionDialogCommand}">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="DocumentAdd" />
+                    <TextBlock HorizontalAlignment="Center" Text="Open PDF" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Grid
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            ColumnDefinitions="*,Auto">
+            <Grid Grid.Column="0">
+                <controls:ScreenDisplay
+                    VerticalAlignment="Stretch"
+                    RenderOptions.BitmapInterpolationMode="HighQuality"
+                    RenderOptions.EdgeMode="Aliased"
+                    RenderOptions.RequiresFullOpacityHandling="False" />
+                <Border VerticalAlignment="Bottom" Background="#72000000">
+                    <TextBlock
+                        Margin="12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Text="{Binding ActiveSlide.Page, Converter={x:Static converters:PageToPageLabelConverter.Instance}}" />
+                </Border>
+            </Grid>
+            <Grid
+                Grid.Column="1"
+                Width="400"
+                Background="#171717">
+                <Grid
+                    Margin="12,0,12,12"
+                    VerticalAlignment="Stretch"
+                    RowDefinitions="Auto,*">
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            Foreground="#7D7D7D"
+                            Text="Annotations" />
+                        <ToggleButton
+                            x:Name="EditModeToggle"
+                            Grid.Column="1"
+                            Margin="0,12"
+                            VerticalAlignment="Center">
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Spacing="6">
+                                <fluent:SymbolIcon
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Symbol="Edit" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Edit Mode" />
+                            </StackPanel>
+                        </ToggleButton>
+                    </Grid>
+                    <TextBox
+                        Grid.Row="1"
+                        VerticalAlignment="Stretch"
+                        AcceptsReturn="True"
+                        FontSize="16"
+                        IsEnabled="{Binding ActiveSlide, Converter={x:Static ObjectConverters.IsNotNull}}"
+                        IsReadOnly="{Binding #EditModeToggle.IsChecked, Converter={x:Static BoolConverters.Not}}"
+                        Text="{Binding ActiveSlide.Annotations}"
+                        TextWrapping="Wrap" />
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2" Margin="12">
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="12">
+                <Button Command="{Binding PreviousCommand}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <fluent:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Symbol="ArrowCircleLeft" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Back" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding NextCommand}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Next" />
+                        <fluent:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Symbol="ArrowCircleRight" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="12">
+                <ComboBox
+                    Width="140"
+                    DisplayMemberBinding="{Binding Converter={x:Static converters:PageTransitionToStringConverter.Instance}}"
+                    ItemsSource="{Binding Transitions}"
+                    PlaceholderText="Transition"
+                    SelectedValue="{Binding Transition}" />
+                <ComboBox
+                    Width="90"
+                    DisplayMemberBinding="{Binding Name}"
+                    ItemsSource="{Binding Durations}"
+                    PlaceholderText="Duration"
+                    SelectedValue="{Binding Duration}"
+                    SelectedValueBinding="{Binding}" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3">
+            <ScrollViewer
+                Grid.Column="0"
+                Background="#171717"
+                BringIntoViewOnFocusChange="True"
+                HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding ActivePresentation.Slides}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                Margin="12"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="entities:ShowcaseSlide">
+                            <controls:PresentationSlideItem Margin="4" DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</windowing:AppWindow>

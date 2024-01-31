@@ -1,0 +1,101 @@
+﻿<windowing:AppWindow
+    x:Class="Showcase.Views.StartupView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:custom="clr-namespace:Showcase.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Showcase.Models"
+    xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
+    xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
+    Title="Showcase PDF"
+    Width="700"
+    Height="550"
+    x:DataType="viewModels1:StartupViewModel"
+    CanResize="False"
+    Icon="/Assets/showcase-pdf-logo.ico"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Styles>
+        <Style Selector="Grid.Refresh">
+            <Style.Animations>
+                <Animation
+                    IterationCount="INFINITE"
+                    PlaybackDirection="Normal"
+                    Duration="0:0:3">
+                    <Animation.Easing>
+                        <CubicEaseInOut />
+                    </Animation.Easing>
+                    <KeyFrame Cue="0%">
+                        <Setter Property="RotateTransform.Angle" Value="0.0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="RotateTransform.Angle" Value="180.0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="RotateTransform.Angle" Value="360.0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </Window.Styles>
+    <Grid ColumnDefinitions="*,210">
+        <Grid Grid.Column="0" Background="#171717">
+            <ScrollViewer Grid.Column="0">
+                <ItemsControl ItemsSource="{CompiledBinding List}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="entities:ShowcasePresentation">
+                            <custom:StartupPresentationListItem DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <Grid Background="#E3171717" IsVisible="{Binding OpenFileCommand.IsRunning}">
+                <Grid
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Classes="Refresh">
+                    <fluent:SymbolIcon
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="58"
+                        Foreground="#7B7B7B"
+                        Symbol="ArrowSync" />
+                </Grid>
+            </Grid>
+        </Grid>
+        <StackPanel
+            Grid.Column="1"
+            Margin="12"
+            Spacing="12">
+            <Button HorizontalAlignment="Stretch" Command="{Binding OpenFileCommand}">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="DocumentAdd" />
+                    <TextBlock HorizontalAlignment="Center" Text="Open PDF" />
+                </StackPanel>
+            </Button>
+            <Button HorizontalAlignment="Stretch" IsEnabled="False">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="Settings" />
+                    <TextBlock HorizontalAlignment="Center" Text="Settings" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</windowing:AppWindow>

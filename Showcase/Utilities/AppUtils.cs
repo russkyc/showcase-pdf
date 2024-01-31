@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
+using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using Avalonia.Platform.Storage;
 
-namespace Showcase;
+namespace Showcase.Utilities;
 
-public partial class App : Application
+public static class AppUtils
 {
-    public override void Initialize()
+    public static IStorageProvider GetStorageProvider(this Application application)
     {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
         {
-            desktop.MainWindow = provider.GetService<StartupView>();
+            return desktopStyleApplicationLifetime
+                .Windows
+                .FirstOrDefault(window => window.IsActive)
+                .StorageProvider;
         }
 
-        base.OnFrameworkInitializationCompleted();
+        throw new PlatformNotSupportedException();
     }
 }

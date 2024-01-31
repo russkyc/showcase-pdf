@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using Showcase.Models.Entities;
 
-namespace Showcase;
+namespace Showcase.Models.Messages;
 
-public partial class App : Application
+public class PresentationOpenedMessage : ValueChangedMessage<ShowcasePresentation>
 {
-    public override void Initialize()
+    public PresentationOpenedMessage(ShowcasePresentation value) : base(value)
     {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
     }
 }

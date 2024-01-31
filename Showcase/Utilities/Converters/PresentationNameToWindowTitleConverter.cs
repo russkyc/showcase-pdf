@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,14 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Avalonia.Controls;
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
 
-namespace Showcase;
+namespace Showcase.Utilities.Converters;
 
-public partial class MainWindow : Window
+public class PresentationNameToWindowTitleConverter : IValueConverter
 {
-    public MainWindow()
+    public static PresentationNameToWindowTitleConverter Instance = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        InitializeComponent();
+        if (value is not string name) return "ShowcasePDF";
+        return $"ShowcasePDF - {name}";
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return null;
     }
 }

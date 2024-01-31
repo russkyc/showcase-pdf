@@ -1,0 +1,38 @@
+﻿<Window
+    x:Class="Showcase.Views.ScreenView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Showcase.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
+    xmlns:views="clr-namespace:Showcase.Views"
+    Title="ScreenView"
+    x:DataType="viewModels1:PresenterViewModel"
+    ExtendClientAreaToDecorationsHint="True"
+    Icon="/Assets/showcase-pdf-logo.ico"
+    RenderOptions.BitmapInterpolationMode="MediumQuality"
+    RenderOptions.RequiresFullOpacityHandling="False"
+    SystemDecorations="BorderOnly"
+    WindowState="FullScreen"
+    mc:Ignorable="d">
+    <Grid>
+        <controls:ScreenDisplay />
+        <Viewbox>
+            <Border
+                Width="1280"
+                Height="720"
+                BorderBrush="Red"
+                BorderThickness="20">
+                <TextBlock
+                    Margin="20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    FontSize="100"
+                    FontWeight="Black"
+                    Foreground="Red"
+                    Text="Screen 1" />
+            </Border>
+        </Viewbox>
+    </Grid>
+</Window>

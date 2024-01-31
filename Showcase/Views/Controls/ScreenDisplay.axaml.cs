@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using Avalonia.Controls;
+using CommunityToolkit.Mvvm.Messaging;
+using Showcase.Models.Messages;
+using Showcase.ViewModels;
 
-namespace Showcase;
+namespace Showcase.Views.Controls;
 
-public partial class App : Application
+public partial class ScreenDisplay : UserControl
 {
-    public override void Initialize()
+    public ScreenDisplay()
     {
-        AvaloniaXamlLoader.Load(this);
+        DataContext = new ScreenDisplayViewModel();
+        WeakReferenceMessenger.Default.Register<TransitionChangedMessage>(this, OnTransitionChanged);
+        InitializeComponent();
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    private void OnTransitionChanged(object recipient, TransitionChangedMessage message)
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
+        InitializeComponent();
     }
 }

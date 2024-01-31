@@ -2,10 +2,12 @@
     x:Class="Showcase.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    RequestedThemeVariant="Default">
+    xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+    RequestedThemeVariant="Dark">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
-
     <Application.Styles>
-        <FluentTheme />
+        <styling:FluentAvaloniaTheme CustomAccentColor="#ff6100" PreferUserAccentColor="False" />
+        <StyleInclude Source="avares://AsyncImageLoader.Avalonia/AdvancedImage.axaml" />
+        <StyleInclude Source="avares://Showcase/Views/Styles/ShowcaseStyles.axaml" />
     </Application.Styles>
 </Application>

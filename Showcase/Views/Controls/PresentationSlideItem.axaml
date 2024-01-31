@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="Showcase.Views.Controls.PresentationSlideItem"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+    xmlns:controls="clr-namespace:Showcase.Views.Controls"
+    xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:DataType="entities:ShowcaseSlide"
+    RenderOptions.BitmapInterpolationMode="MediumQuality"
+    RenderOptions.RequiresFullOpacityHandling="False"
+    mc:Ignorable="d">
+    <controls:RadioToggleButton
+        x:Name="SlideButton"
+        Padding="0"
+        Click="Button_OnClick"
+        GroupName="Slides">
+        <Viewbox Margin="2" Stretch="Uniform">
+            <StackPanel>
+                <Grid
+                    Width="224"
+                    Height="126"
+                    Background="Black">
+                    <asyncImageLoader:AdvancedImage
+                        Width="{Binding $parent[Grid].Bounds.Width}"
+                        Source="{Binding PageSource}"
+                        Stretch="Uniform" />
+                </Grid>
+                <TextBlock
+                    Margin="4"
+                    FontSize="10"
+                    Text="{Binding Page, Converter={x:Static converters:PageToPageLabelConverter.Instance}}" />
+            </StackPanel>
+        </Viewbox>
+    </controls:RadioToggleButton>
+</UserControl>

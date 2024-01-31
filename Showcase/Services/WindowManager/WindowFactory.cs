@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+using System;
 using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
+using Showcase.Services.WindowManager.Interfaces;
+using Showcase.Utilities;
+using Showcase.ViewModels;
 using Showcase.Views;
 
-namespace Showcase;
+namespace Showcase.Services.WindowManager;
 
-public partial class App : Application
+public class WindowFactory : IWindowFactory
 {
-    public override void Initialize()
+    private readonly IServiceProvider _serviceProvider;
+
+    public WindowFactory(IServiceProvider serviceProvider)
     {
-        AvaloniaXamlLoader.Load(this);
+        _serviceProvider = serviceProvider;
     }
 
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
+    public void CreatePresenterWindow(bool hideCurrent = false)
+        => WindowUtils
+            .TryShowWindow<PresenterView>(
+                _serviceProvider.GetService<PresenterViewModel>(), 
+                hideCurrent);
 
-        base.OnFrameworkInitializationCompleted();
-    }
+    public void CreateScreenWindow(bool hideCurrent = false)
+        => WindowUtils
+            .TryShowWindow<ScreenView>(
+                _serviceProvider.GetService<PresenterViewModel>(), 
+                hideCurrent);
+
+    public void CreateStartupWindow(bool hideCurrent = false)
+        => WindowUtils.TryShowWindow<StartupView>(
+            _serviceProvider.GetService<StartupViewModel>(), 
+            hideCurrent);
 }

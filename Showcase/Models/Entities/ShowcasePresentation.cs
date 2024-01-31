@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using System.Collections.Generic;
 
-namespace Showcase;
+namespace Showcase.Models.Entities;
 
-public partial class App : Application
+public class ShowcasePresentation
 {
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Path { get; set; }
+    public string Md5 { get; set; }
+    public byte[] Data { get; set; }
+    public int Pages { get; set; }
+    public string DataFolder { get; set; }
+    public ShowcaseSlide PreviewSlide { get; set; }
+    public List<ShowcaseSlide> Slides { get; set; }
 }

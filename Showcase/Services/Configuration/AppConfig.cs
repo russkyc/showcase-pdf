@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using Russkyc.Configuration;
+using Showcase.Services.Configuration.Interfaces;
 
-namespace Showcase;
+namespace Showcase.Services.Configuration;
 
-public partial class App : Application
+public class AppConfig : ConfigProvider, IAppConfig
 {
-    public override void Initialize()
+    public AppConfig(string path) : base(path)
     {
-        AvaloniaXamlLoader.Load(this);
     }
-
-    public override void OnFrameworkInitializationCompleted()
+    public string Transition
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
+        get => GetValue<string>(nameof(Transition));
+        set => SetValue(nameof(Transition), value);
+    }
+    public string Duration
+    {
+        get => GetValue<string>(nameof(Duration));
+        set => SetValue(nameof(Duration), value);
     }
 }

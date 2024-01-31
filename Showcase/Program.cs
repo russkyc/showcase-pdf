@@ -38,6 +38,25 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .With(new AvaloniaNativePlatformOptions()
+            {
+                OverlayPopups = true
+            })
+            .With(new Win32PlatformOptions()
+            {
+                RenderingMode = new []
+                {
+                    Win32RenderingMode.AngleEgl
+                    }, CompositionMode = new []
+                    {
+                        Win32CompositionMode.LowLatencyDxgiSwapChain
+                    },
+                OverlayPopups = true
+            }).With(new SkiaOptions()
+            {
+                // Fixes slow UI for Media-rich apps
+                MaxGpuResourceSizeBytes = 1073741824
+            })
             .WithInterFont()
             .LogToTrace();
 }

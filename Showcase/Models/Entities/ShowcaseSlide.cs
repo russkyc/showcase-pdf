@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using DebounceThrottle;
+using Showcase.Models.Messages;
 
-namespace Showcase;
+namespace Showcase.Models.Entities;
 
-public partial class App : Application
+public partial class ShowcaseSlide : ObservableObject
 {
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
+    public int Page { get; set; }
+    public string PageSource { get; set; }
+    
+    [ObservableProperty] private string _annotations;
 
-    public override void OnFrameworkInitializationCompleted()
+    partial void OnAnnotationsChanged(string? value, string newValue)
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
+        if (value is null || value.Equals(newValue)) return;
+        WeakReferenceMessenger.Default.Send(new SlideUpdatedMessage());
     }
+    
 }

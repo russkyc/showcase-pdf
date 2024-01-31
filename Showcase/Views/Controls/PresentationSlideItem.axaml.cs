@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.Messaging;
+using Showcase.Models.Entities;
+using Showcase.Models.Messages;
 
-namespace Showcase;
+namespace Showcase.Views.Controls;
 
-public partial class App : Application
+public partial class PresentationSlideItem : UserControl
 {
-    public override void Initialize()
+    public PresentationSlideItem()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
+        WeakReferenceMessenger.Default.Register<SlideChangedMessage>(this,OnSlideChanged);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    private void OnSlideChanged(object recipient, SlideChangedMessage message)
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (DataContext is null || message.Value is null)
         {
-            desktop.MainWindow = provider.GetService<StartupView>();
+            SlideButton.IsChecked = false;
+            return;
         }
+        
+        var context = (ShowcaseSlide)DataContext;
 
-        base.OnFrameworkInitializationCompleted();
+        if (message.Value.Page == context.Page)
+        {
+            Focus();
+            SlideButton.IsChecked = true;
+        }
+    }
+
+    private async void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var slide = (ShowcaseSlide)DataContext;
+        WeakReferenceMessenger.Default.Send(new SlideChangedMessage(slide));
     }
 }

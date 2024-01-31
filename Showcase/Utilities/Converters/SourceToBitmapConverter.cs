@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using System;
+using System.Globalization;
+using Avalonia.Controls;
+using Avalonia.Data.Converters;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 
-namespace Showcase;
+namespace Showcase.Utilities.Converters;
 
-public partial class App : Application
+public class SourceToBitmapConverter : IValueConverter
 {
-    public override void Initialize()
+    public static SourceToBitmapConverter Instance = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        AvaloniaXamlLoader.Load(this);
+        if (value is not string source) return null;
+        return new Bitmap(source);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
+        return null;
     }
 }

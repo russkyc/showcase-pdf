@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using System;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using Showcase.Models;
+using Showcase.Models.Entities;
+using Showcase.Models.Messages;
 
-namespace Showcase;
+namespace Showcase.ViewModels;
 
-public partial class App : Application
+public partial class ScreenDisplayViewModel : ObservableObject
 {
-    public override void Initialize()
+    [ObservableProperty] private ShowcaseSlide _slide;
+    [ObservableProperty] private IPageTransition _transition;
+
+    public ScreenDisplayViewModel()
     {
-        AvaloniaXamlLoader.Load(this);
+        WeakReferenceMessenger
+            .Default
+            .Register<SlideChangedMessage>(this, OnSlideChanged);
+        
+        WeakReferenceMessenger
+            .Default
+            .Register<TransitionChangedMessage>(this, OnSlideTransitionChanged);
+        
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    private void OnSlideTransitionChanged(object recipient, TransitionChangedMessage message)
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
+        Transition = message.Value;
+    }
 
-        base.OnFrameworkInitializationCompleted();
+    private void OnSlideChanged(object recipient, SlideChangedMessage message)
+    {
+        Slide = message.Value;
     }
 }

@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using System;
+using System.IO;
+using System.Security.Cryptography;
 
-namespace Showcase;
+namespace Showcase.Utilities.Extensions;
 
-public partial class App : Application
+public static class FileExtensions
 {
-    public override void Initialize()
+    public static string Name(this string source)
     {
-        AvaloniaXamlLoader.Load(this);
+        var file = new FileInfo(source);
+        return file.Name.Replace(".pdf", string.Empty);
+    }
+    public static string Md5(this string source)
+    {
+        using var md5 = MD5.Create();
+        using var stream = File.OpenRead(source);
+        var hash = md5.ComputeHash(stream);
+        
+        return BitConverter
+            .ToString(hash)
+            .Replace("-", String.Empty)
+            .ToLowerInvariant();
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public static void CreateDirectoryIfNotExists(this string path)
     {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        try
         {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
+            var directory = new DirectoryInfo(path);
+            
+            if (directory.Exists) return;
 
-        base.OnFrameworkInitializationCompleted();
+            directory.Create();
+        }
+        catch (Exception _)
+        {
+            Directory.CreateDirectory(path);
+        }
     }
 }

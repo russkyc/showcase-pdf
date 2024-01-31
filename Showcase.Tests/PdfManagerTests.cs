@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using Shouldly;
+using Showcase.Services.PdfReader;
+using Xunit;
 
-namespace Showcase;
+namespace Showcase.Tests;
 
-public partial class App : Application
+public class PdfManagerTests
 {
-    public override void Initialize()
+    private readonly PdfManager _pdfManager = new();
+    
+    [Fact]
+    async void ReadPdfDataReturnsPdfPresentation()
     {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
+        // Arrange
+        var source = @"C:\Users\Russell\Downloads\Sermon - November 13.pdf";
         
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
+        // Act
+        var pdfPresentation = await _pdfManager.GetPresentation(source);
+        
+        // Assert
+        pdfPresentation.Slides.Count.ShouldBeGreaterThan(0);
     }
 }

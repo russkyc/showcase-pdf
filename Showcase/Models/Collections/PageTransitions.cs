@@ -1,4 +1,4 @@
-// MIT License
+﻿// MIT License
 // 
 // Copyright (c) 2024 Russell Camo (Russkyc)
 // 
@@ -20,36 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Microsoft.Extensions.DependencyInjection;
-using Showcase.Utilities.Extensions;
-using Showcase.Views;
+using System;
+using System.Collections.Generic;
+using Avalonia.Animation;
+using Showcase.Models.Transitions;
 
-namespace Showcase;
+namespace Showcase.Models.Collections;
 
-public partial class App : Application
+public static class PageTransitions
 {
-    public override void Initialize()
+    public static IEnumerable<IPageTransition> GetTransitions(TimeSpan duration)
     {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        var provider = new ServiceCollection()
-            .AddShowcaseViews()
-            .AddShowcaseViewModels()
-            .AddShowcaseServices()
-            .BuildServiceProvider();
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = provider.GetService<StartupView>();
-        }
-
-        base.OnFrameworkInitializationCompleted();
+        yield return new Cut();
+        yield return new Fade(duration);
+        yield return new HorizontalSlide(duration);
+        yield return new VerticalSlide(duration);
+        yield return new CubeRotation(duration);
     }
 }
