@@ -1,35 +1,34 @@
 ﻿<UserControl
-    x:Class="Showcase.Views.Controls.ScreenDisplay"
+    x:Class="Showcase.Views.Controls.Display"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
     xmlns:controls="clr-namespace:Showcase.Views.Controls"
+    xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:entities="clr-namespace:Showcase.Models.Entities"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
-    VerticalAlignment="Stretch"
-    d:DesignHeight="1080"
-    d:DesignWidth="1920"
-    x:DataType="viewModels1:ScreenDisplayViewModel"
-    Background="Black"
-    RenderOptions.BitmapInterpolationMode="HighQuality"
-    RenderOptions.EdgeMode="Aliased"
-    RenderOptions.RequiresFullOpacityHandling="False"
+    xmlns:viewModels="clr-namespace:Showcase.ViewModels"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
+    x:DataType="viewModels:PresenterViewModel"
     mc:Ignorable="d">
     <Grid Background="Black">
         <TransitioningContentControl
             x:Name="TransitionControl"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Content="{Binding Slide}"
+            Content="{Binding ActiveSlide}"
             PageTransition="{Binding Transition}">
             <TransitioningContentControl.DataTemplates>
                 <DataTemplate DataType="entities:ShowcaseSlide">
                     <Viewbox>
-                        <asyncImageLoader:AdvancedImage
-                            Height="{Binding $parent[controls:ScreenDisplay].Bounds.Height}"
-                            Source="{Binding PageSource}"
+                        <Image
+                            Height="{Binding $parent[controls:Display].Bounds.Height}"
+                            HorizontalAlignment="Center"
+                            RenderOptions.BitmapInterpolationMode="HighQuality"
+                            RenderOptions.EdgeMode="Aliased"
+                            RenderOptions.RequiresFullOpacityHandling="False"
+                            Source="{Binding PageSource, Converter={x:Static converters:SourceToBitmapConverter.Instance}}"
                             Stretch="Uniform" />
                     </Viewbox>
                 </DataTemplate>

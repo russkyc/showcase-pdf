@@ -1,5 +1,5 @@
 ﻿<windowing:AppWindow
-    x:Class="Showcase.Views.StartupView"
+    x:Class="Showcase.Views.FilesView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
@@ -14,7 +14,7 @@
     Title="Showcase PDF"
     Width="700"
     Height="550"
-    x:DataType="viewModels1:StartupViewModel"
+    x:DataType="viewModels1:FilesViewModel"
     CanResize="False"
     Icon="/Assets/showcase-pdf-logo.ico"
     WindowStartupLocation="CenterScreen"
@@ -53,23 +53,26 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="entities:ShowcasePresentation">
-                            <custom:StartupPresentationListItem DataContext="{Binding}" />
+                            <custom:FilesPresentationListItem DataContext="{Binding}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Grid Background="#E3171717" IsVisible="{Binding OpenFileCommand.IsRunning}">
-                <Grid
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Classes="Refresh">
-                    <fluent:SymbolIcon
+            <Grid Background="#E3171717" IsVisible="{Binding Importing}">
+                <StackPanel VerticalAlignment="Center" Spacing="12">
+                    <Grid HorizontalAlignment="Center" Classes="Refresh">
+                        <fluent:SymbolIcon
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="54"
+                            Foreground="#7B7B7B"
+                            Symbol="ArrowSync" />
+                    </Grid>
+                    <TextBlock
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="58"
                         Foreground="#7B7B7B"
-                        Symbol="ArrowSync" />
-                </Grid>
+                        Text="Creating Presentation from PDF" />
+                </StackPanel>
             </Grid>
         </Grid>
         <StackPanel
@@ -83,7 +86,7 @@
                     Orientation="Horizontal"
                     Spacing="6">
                     <fluent:SymbolIcon FontSize="18" Symbol="DocumentAdd" />
-                    <TextBlock HorizontalAlignment="Center" Text="Open PDF" />
+                    <TextBlock HorizontalAlignment="Center" Text="Import PDF" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" IsEnabled="False">

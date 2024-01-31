@@ -28,9 +28,9 @@ using Showcase.Models.Messages;
 
 namespace Showcase.Views;
 
-public partial class StartupView : Window
+public partial class FilesView : Window
 {
-    public StartupView()
+    public FilesView()
     {
         InitializeComponent();
     }

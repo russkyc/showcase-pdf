@@ -26,9 +26,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Showcase.Controls;
 
-public partial class StartupPresentationListItem : UserControl
+public partial class FilesPresentationListItem : UserControl
 {
-    public StartupPresentationListItem()
+    public FilesPresentationListItem()
     {
         InitializeComponent();
     }

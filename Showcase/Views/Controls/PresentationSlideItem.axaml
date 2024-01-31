@@ -7,9 +7,10 @@
     xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:DataType="entities:ShowcaseSlide"
-    RenderOptions.BitmapInterpolationMode="MediumQuality"
+    RenderOptions.BitmapInterpolationMode="LowQuality"
     RenderOptions.RequiresFullOpacityHandling="False"
     mc:Ignorable="d">
     <controls:RadioToggleButton
@@ -28,10 +29,20 @@
                         Source="{Binding PageSource}"
                         Stretch="Uniform" />
                 </Grid>
-                <TextBlock
-                    Margin="4"
-                    FontSize="10"
-                    Text="{Binding Page, Converter={x:Static converters:PageToPageLabelConverter.Instance}}" />
+                <Grid>
+                    <TextBlock
+                        Margin="4"
+                        HorizontalAlignment="Left"
+                        FontSize="13"
+                        Text="{Binding Page, Converter={x:Static converters:PageToPageLabelConverter.Instance}}" />
+                    <fluent:SymbolIcon
+                        Margin="4"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        IsVisible="{Binding Annotations, Mode=OneWay, Converter={x:Static converters:NullOrWhitespaceToBoolConverter.Instance}}"
+                        Symbol="Notepad" />
+                </Grid>
             </StackPanel>
         </Viewbox>
     </controls:RadioToggleButton>

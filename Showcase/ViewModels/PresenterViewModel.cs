@@ -151,6 +151,12 @@ public partial class PresenterViewModel : ObservableObject
                             slide => slide.Page == ActiveSlide.Page - 1)));
     }
 
+    [RelayCommand]
+    async Task OpenAbout()
+    {
+        _windowFactory.CreateAboutWindow();
+    }
+
     private async void OnSlideUpdated(object recipient, SlideUpdatedMessage message)
     {
         await _debounceDispatcher.DebounceAsync(() => _presentationStore.UpdatePresentation(ActivePresentation));
@@ -214,5 +220,8 @@ public partial class PresenterViewModel : ObservableObject
     {
         ActiveSlide = null;
         ActivePresentation = message.Value;
+        ActivePresentation.LastOpened = DateTime.Now;
+        
+        _presentationStore.UpdatePresentation(ActivePresentation);
     }
 }

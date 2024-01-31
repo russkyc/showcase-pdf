@@ -20,23 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using Avalonia;
 using Avalonia.Controls;
-using CommunityToolkit.Mvvm.Messaging;
-using Showcase.Models.Messages;
-using Showcase.ViewModels;
+using Avalonia.Markup.Xaml;
 
-namespace Showcase.Views.Controls;
+namespace Showcase.Views;
 
-public partial class ScreenDisplay : UserControl
+public partial class AboutView : Window
 {
-    public ScreenDisplay()
-    {
-        DataContext = new ScreenDisplayViewModel();
-        WeakReferenceMessenger.Default.Register<TransitionChangedMessage>(this, OnTransitionChanged);
-        InitializeComponent();
-    }
-
-    private void OnTransitionChanged(object recipient, TransitionChangedMessage message)
+    public AboutView()
     {
         InitializeComponent();
     }

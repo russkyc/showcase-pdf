@@ -1,27 +1,31 @@
-﻿<Window
+﻿<windowing:AppWindow
     x:Class="Showcase.Views.ScreenView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Showcase.Views.Controls"
+    xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
+    xmlns:viewModels="clr-namespace:Showcase.ViewModels"
     xmlns:views="clr-namespace:Showcase.Views"
+    xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Title="ScreenView"
-    x:DataType="viewModels1:PresenterViewModel"
+    x:DataType="viewModels:PresenterViewModel"
+    CanResize="False"
     ExtendClientAreaToDecorationsHint="True"
     Icon="/Assets/showcase-pdf-logo.ico"
-    RenderOptions.BitmapInterpolationMode="MediumQuality"
+    RenderOptions.BitmapInterpolationMode="HighQuality"
     RenderOptions.RequiresFullOpacityHandling="False"
-    SystemDecorations="BorderOnly"
-    WindowState="FullScreen"
+    ShowInTaskbar="False"
+    SystemDecorations="None"
+    WindowState="Maximized"
     mc:Ignorable="d">
-    <Grid>
-        <controls:ScreenDisplay />
+    <Grid Background="Black">
+        <controls:Display DataContext="{Binding}" />
         <Viewbox>
             <Border
-                Width="1280"
-                Height="720"
+                Width="{Binding $parent[views:ScreenView].Bounds.Width}"
+                Height="{Binding $parent[views:ScreenView].Bounds.Height}"
                 BorderBrush="Red"
                 BorderThickness="20">
                 <TextBlock
@@ -31,8 +35,8 @@
                     FontSize="100"
                     FontWeight="Black"
                     Foreground="Red"
-                    Text="Screen 1" />
+                    Text="{Binding $parent[Window], Converter={x:Static converters:WindowToScreenIndexConverter.Instance}}" />
             </Border>
         </Viewbox>
     </Grid>
-</Window>
+</windowing:AppWindow>

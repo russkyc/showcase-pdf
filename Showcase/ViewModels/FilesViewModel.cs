@@ -38,15 +38,16 @@ using Showcase.Utilities.Extensions;
 
 namespace Showcase.ViewModels;
 
-public partial class StartupViewModel : ObservableObject
+public partial class FilesViewModel : ObservableObject
 {
     private readonly IPdfManager _pdfManager;
     private readonly IWindowFactory _windowFactory;
     private readonly IPresentationStore _presentationStore;
 
+    [ObservableProperty] private bool _importing;
     [ObservableProperty] private ObservableCollection<ShowcasePresentation> _list = new();
 
-    public StartupViewModel(
+    public FilesViewModel(
         IPdfManager pdfManager,
         IWindowFactory windowFactory,
         IPresentationStore presentationStore)
@@ -58,25 +59,6 @@ public partial class StartupViewModel : ObservableObject
         List = _presentationStore
             .GetPresentations()
             .ToObservableCollection();
-
-        WeakReferenceMessenger.Default.Register<StartFileImportMessage>(this, OnFileImport);
-    }
-
-    private async void OnFileImport(object recipient, StartFileImportMessage message)
-    {
-        var presentation = await _pdfManager.GetPresentation(message.Value);
-        await _presentationStore.AddPresentation(presentation);
-        
-        List = _presentationStore
-            .GetPresentations()
-            .ToObservableCollection();
-
-        _windowFactory.CreateScreenWindow(true);
-        _windowFactory.CreatePresenterWindow();
-
-        WeakReferenceMessenger
-            .Default
-            .Send(new PresentationOpenedMessage(presentation));
     }
 
     [RelayCommand]
@@ -86,31 +68,35 @@ public partial class StartupViewModel : ObservableObject
             .Current
             .GetStorageProvider()
             .OpenFilePickerAsync(new FilePickerOpenOptions
-        {
-            Title = "Open PDF File",
-            AllowMultiple = false, FileTypeFilter = new []{new FilePickerFileType("Pdf")
             {
-                Patterns = new []{"*.pdf"}
-            }}
-        });
+                Title = "Open PDF File",
+                AllowMultiple = false, FileTypeFilter = new[]
+                {
+                    new FilePickerFileType("Pdf")
+                    {
+                        Patterns = new[] { "*.pdf" }
+                    }
+                }
+            });
 
         if (files.Count == 0)
         {
             return;
         }
-        
+
+        Importing = true;
         var presentation = await _pdfManager.GetPresentation(files.First().Path.LocalPath);
         await _presentationStore.AddPresentation(presentation);
-        
+
         List = _presentationStore
             .GetPresentations()
             .ToObservableCollection();
 
-        _windowFactory.CreateScreenWindow(true);
+        Importing = false;
         _windowFactory.CreatePresenterWindow();
 
         await Task.Delay(500);
-        
+
         WeakReferenceMessenger
             .Default
             .Send(new PresentationOpenedMessage(presentation));
@@ -119,9 +105,8 @@ public partial class StartupViewModel : ObservableObject
     [RelayCommand]
     async Task OpenPresentation(ShowcasePresentation pdfPresentation)
     {
-        _windowFactory.CreateScreenWindow(true);
         _windowFactory.CreatePresenterWindow();
-        
+
         WeakReferenceMessenger
             .Default
             .Send(new PresentationOpenedMessage(pdfPresentation));

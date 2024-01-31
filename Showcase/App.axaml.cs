@@ -47,7 +47,7 @@ public partial class App : Application
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = provider.GetService<StartupView>();
+            desktop.MainWindow = provider.GetService<FilesView>();
         }
 
         base.OnFrameworkInitializationCompleted();

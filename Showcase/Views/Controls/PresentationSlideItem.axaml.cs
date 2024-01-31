@@ -48,7 +48,7 @@ public partial class PresentationSlideItem : UserControl
 
         if (message.Value.Page == context.Page)
         {
-            Focus();
+            this.BringIntoView();
             SlideButton.IsChecked = true;
         }
     }

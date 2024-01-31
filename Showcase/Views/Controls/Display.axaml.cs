@@ -26,13 +26,15 @@ using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.Messaging;
 using Showcase.Models.Messages;
 
-namespace Showcase.Views;
+namespace Showcase.Views.Controls;
 
-public partial class ScreenView : Window
+public partial class Display : UserControl
 {
-    public ScreenView()
+    public Display()
     {
-        WeakReferenceMessenger.Default.Register<TransitionChangedMessage>(this, OnTransitionChanged);
+        WeakReferenceMessenger
+            .Default
+            .Register<TransitionChangedMessage>(this, OnTransitionChanged);
         InitializeComponent();
     }
     
@@ -40,4 +42,5 @@ public partial class ScreenView : Window
     {
         InitializeComponent();
     }
+
 }

@@ -41,4 +41,5 @@ public partial class PresenterView : Window
     {
         EditModeToggle.IsChecked = false;
     }
+
 }

@@ -6,7 +6,10 @@
     RequestedThemeVariant="Dark">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
     <Application.Styles>
-        <styling:FluentAvaloniaTheme CustomAccentColor="#ff6100" PreferUserAccentColor="False" />
+        <styling:FluentAvaloniaTheme
+            CustomAccentColor="#ff6100"
+            PreferSystemTheme="False"
+            PreferUserAccentColor="False" />
         <StyleInclude Source="avares://AsyncImageLoader.Avalonia/AdvancedImage.axaml" />
         <StyleInclude Source="avares://Showcase/Views/Styles/ShowcaseStyles.axaml" />
     </Application.Styles>

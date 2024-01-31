@@ -9,7 +9,6 @@
     xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
-    xmlns:views="clr-namespace:Showcase.Views"
     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Title="{Binding ActivePresentation.Name, Converter={x:Static converters:PresentationNameToWindowTitleConverter.Instance}}"
     Width="1280"
@@ -26,23 +25,33 @@
         <KeyBinding Command="{Binding NextCommand}" Gesture="Right" />
     </Window.KeyBindings>
     <Grid RowDefinitions="Auto,*,Auto,Auto">
-        <Grid
-            Grid.Row="0"
-            Margin="12"
-            ColumnDefinitions="Auto,*,Auto,Auto">
-            <Button
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                Command="{Binding OpenSelectionDialogCommand}">
-                <StackPanel
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="6">
-                    <fluent:SymbolIcon FontSize="18" Symbol="DocumentAdd" />
-                    <TextBlock HorizontalAlignment="Center" Text="Open PDF" />
-                </StackPanel>
-            </Button>
+        <Grid Grid.Row="0" Margin="12">
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <Button HorizontalAlignment="Stretch" Command="{Binding OpenSelectionDialogCommand}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <fluent:SymbolIcon FontSize="18" Symbol="DocumentPdf" />
+                        <TextBlock HorizontalAlignment="Center" Text="Open" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="12">
+                <Button
+                    Padding="5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding OpenAboutCommand}">
+                    <fluent:SymbolIcon Symbol="Info" />
+                </Button>
+                <Button Padding="5" HorizontalAlignment="Stretch">
+                    <fluent:SymbolIcon Symbol="Settings" />
+                </Button>
+            </StackPanel>
         </Grid>
         <Grid
             Grid.Row="1"
@@ -50,13 +59,13 @@
             VerticalAlignment="Stretch"
             ColumnDefinitions="*,Auto">
             <Grid Grid.Column="0">
-                <controls:ScreenDisplay
-                    VerticalAlignment="Stretch"
-                    RenderOptions.BitmapInterpolationMode="HighQuality"
-                    RenderOptions.EdgeMode="Aliased"
+                <controls:Display
+                    DataContext="{Binding}"
+                    RenderOptions.BitmapInterpolationMode="MediumQuality"
                     RenderOptions.RequiresFullOpacityHandling="False" />
                 <Border VerticalAlignment="Bottom" Background="#72000000">
                     <TextBlock
+                        x:Name="NotesTextBox"
                         Margin="12"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -80,7 +89,7 @@
                             VerticalAlignment="Center"
                             FontSize="18"
                             Foreground="#7D7D7D"
-                            Text="Annotations" />
+                            Text="Presenter Notes" />
                         <ToggleButton
                             x:Name="EditModeToggle"
                             Grid.Column="1"
@@ -110,7 +119,8 @@
                         IsEnabled="{Binding ActiveSlide, Converter={x:Static ObjectConverters.IsNotNull}}"
                         IsReadOnly="{Binding #EditModeToggle.IsChecked, Converter={x:Static BoolConverters.Not}}"
                         Text="{Binding ActiveSlide.Annotations}"
-                        TextWrapping="Wrap" />
+                        TextWrapping="Wrap"
+                        Watermark="Toggle edit mode to add notes to this page." />
                 </Grid>
             </Grid>
         </Grid>
@@ -185,7 +195,8 @@
                             <StackPanel
                                 Margin="12"
                                 VerticalAlignment="Top"
-                                Orientation="Horizontal" />
+                                Orientation="Horizontal"
+                                Spacing="6" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
