@@ -69,7 +69,7 @@ public partial class FilesViewModel : ObservableObject
             .GetStorageProvider()
             .OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Open PDF File",
+                Title = "Import PDF File",
                 AllowMultiple = false, FileTypeFilter = new[]
                 {
                     new FilePickerFileType("Pdf")
