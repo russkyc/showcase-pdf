@@ -21,8 +21,10 @@
 // SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 
@@ -38,6 +40,73 @@ public static class AppUtils
                 .Windows
                 .FirstOrDefault(window => window.IsActive)
                 .StorageProvider;
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+    
+    public static Window GetActiveWindow(this Application application)
+    {
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        {
+            return desktopStyleApplicationLifetime
+                .Windows
+                .First(window => window.IsActive);
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+    
+    public static Window GetMainWindow(this Application application)
+    {
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        {
+            return desktopStyleApplicationLifetime
+                .MainWindow!;
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+    
+    public static bool HasWindow<T>(this Application application) where T : Window
+    {
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        {
+            return desktopStyleApplicationLifetime
+                .Windows.OfType<T>()
+                .Any();
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+    
+    public static void SetMainWindow(this Application application, Window window)
+    {
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        {
+            desktopStyleApplicationLifetime.MainWindow = window;
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+    
+    public static Window GetActiveWindow<T>(this Application application) where T : Window
+    {
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        {
+            return desktopStyleApplicationLifetime
+                .Windows.OfType<T>()
+                .First();
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+
+    public static IEnumerable<Window> GetWindows(this Application application)
+    {
+        if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        {
+            return desktopStyleApplicationLifetime.Windows;
         }
 
         throw new PlatformNotSupportedException();

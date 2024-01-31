@@ -21,40 +21,22 @@
 // SOFTWARE.
 
 using System;
-using Avalonia.Animation;
-using Avalonia.Animation.Easings;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using Showcase.Models;
-using Showcase.Models.Entities;
-using Showcase.Models.Messages;
+using System.Globalization;
+using Avalonia.Data.Converters;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Utilities.Converters;
 
-public partial class ScreenDisplayViewModel : ObservableObject
+public class NullOrWhitespaceToBoolConverter : IValueConverter
 {
-    [ObservableProperty] private ShowcaseSlide _slide;
-    [ObservableProperty] private IPageTransition _transition;
-
-    public ScreenDisplayViewModel()
+    public static NullOrWhitespaceToBoolConverter Instance = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        WeakReferenceMessenger
-            .Default
-            .Register<SlideChangedMessage>(this, OnSlideChanged);
-        
-        WeakReferenceMessenger
-            .Default
-            .Register<TransitionChangedMessage>(this, OnSlideTransitionChanged);
-        
+        if (value is not string content) return false;
+        return !string.IsNullOrWhiteSpace(content);
     }
 
-    private void OnSlideTransitionChanged(object recipient, TransitionChangedMessage message)
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        Transition = message.Value;
-    }
-
-    private void OnSlideChanged(object recipient, SlideChangedMessage message)
-    {
-        Slide = message.Value;
+        return null;
     }
 }

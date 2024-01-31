@@ -38,9 +38,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddShowcaseViews(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton(services => new StartupView()
+        serviceCollection.AddSingleton(services => new FilesView()
         {
-            DataContext = services.GetService<StartupViewModel>()
+            DataContext = services.GetService<FilesViewModel>()
         });
         serviceCollection.AddSingleton(services => new PresenterView()
         {
@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddShowcaseViewModels(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<StartupViewModel>();
+        serviceCollection.AddSingleton<FilesViewModel>();
         serviceCollection.AddSingleton<PresenterViewModel>();
         
         return serviceCollection;
