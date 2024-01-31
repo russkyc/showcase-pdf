@@ -13,11 +13,11 @@ It unlocks a new world of advanced, and seamless PDF presentations.
 
 ## :heart: Screenshots
 
-<img src=".github/images/files.png" style="width: 100%;" />
+<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/files.png" style="width: 100%;" />
 
-<img src=".github/images/presenter.png" style="width: 100%;" />
+<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/presenter.png" style="width: 100%;" />
 
-<img src=".github/images/about.png" style="width: 100%;" />
+<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/about.png" style="width: 100%;" />
 
 ## :tada: Special Thanks
 
