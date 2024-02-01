@@ -28,4 +28,5 @@ public interface IWindowFactory
     void CreateScreenWindow(int display);
     void CreateStartupWindow();
     void CreateAboutWindow();
+    void CreateSettingsWindow();
 }
