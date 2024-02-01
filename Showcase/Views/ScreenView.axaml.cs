@@ -20,11 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using CommunityToolkit.Mvvm.Messaging;
-using Showcase.Models.Messages;
+using Avalonia.Interactivity;
 
 namespace Showcase.Views;
 
@@ -32,12 +29,11 @@ public partial class ScreenView : Window
 {
     public ScreenView()
     {
-        WeakReferenceMessenger.Default.Register<TransitionChangedMessage>(this, OnTransitionChanged);
         InitializeComponent();
     }
-    
-    private void OnTransitionChanged(object recipient, TransitionChangedMessage message)
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
-        InitializeComponent();
+        Close();
     }
 }

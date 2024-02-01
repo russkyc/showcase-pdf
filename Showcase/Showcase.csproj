@@ -42,6 +42,10 @@
         <DependentUpon>PresentationSlideItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Controls\ScreenDisplay.axaml.cs">
+        <DependentUpon>ScreenDisplay.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
 

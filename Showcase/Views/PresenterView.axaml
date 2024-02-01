@@ -24,6 +24,29 @@
         <KeyBinding Command="{Binding PreviousCommand}" Gesture="Left" />
         <KeyBinding Command="{Binding NextCommand}" Gesture="Right" />
     </Window.KeyBindings>
+    <Window.Styles>
+        <Style Selector="Grid.Live">
+            <Style.Animations>
+                <Animation
+                    IterationCount="INFINITE"
+                    PlaybackDirection="Normal"
+                    Duration="0:0:5">
+                    <Animation.Easing>
+                        <CubicEaseInOut />
+                    </Animation.Easing>
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0.5" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </Window.Styles>
     <Grid RowDefinitions="Auto,*,Auto,Auto">
         <Grid Grid.Row="0" Margin="12">
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
@@ -42,6 +65,24 @@
                 HorizontalAlignment="Right"
                 Orientation="Horizontal"
                 Spacing="12">
+                <ToggleButton
+                    Padding="5"
+                    HorizontalAlignment="Stretch"
+                    IsChecked="{Binding Live}">
+                    <ToolTip.Tip>
+                        <StackPanel>
+                            <TextBlock Text="Show presentation across screens" />
+                        </StackPanel>
+                    </ToolTip.Tip>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <fluent:SymbolIcon FontSize="18" Symbol="DualScreenDesktop" />
+                        <TextBlock HorizontalAlignment="Center" Text="Live" />
+                    </StackPanel>
+                </ToggleButton>
                 <Button
                     Padding="5"
                     HorizontalAlignment="Stretch"
@@ -53,7 +94,10 @@
                     </ToolTip.Tip>
                     <fluent:SymbolIcon Symbol="Info" />
                 </Button>
-                <Button Padding="5" HorizontalAlignment="Stretch">
+                <Button
+                    Padding="5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding OpenSettingsCommand}">
                     <ToolTip.Tip>
                         <StackPanel>
                             <TextBlock Text="Settings" />
@@ -82,6 +126,31 @@
                         FontSize="18"
                         FontWeight="Medium"
                         Text="{Binding ActiveSlide.Page, Converter={x:Static converters:PageToPageLabelConverter.Instance}}" />
+                </Border>
+                <Border
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="{StaticResource AppPrimary}"
+                    BorderThickness="2"
+                    IsVisible="{Binding Live}">
+                    <Grid
+                        Margin="16,12"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Classes="Live">
+                        <StackPanel Orientation="Horizontal" Spacing="7">
+                            <fluent:SymbolIcon
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Foreground="{StaticResource AppPrimary}"
+                                Symbol="PlayCircle" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="15"
+                                Text="Presenting" />
+                        </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
             <Grid

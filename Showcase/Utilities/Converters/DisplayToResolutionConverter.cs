@@ -20,14 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
 using Showcase.Models.Entities;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.Utilities.Converters;
 
-public interface IAppConfig
+public class DisplayToResolutionConverter : IValueConverter
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
+    public static DisplayToResolutionConverter Instance = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is not Display display) return null;
+        return $"{display.Width} x {display.Height}";
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return null;
+    }
 }

@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.Design;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -49,7 +48,7 @@ public partial class App : Application
         {
             desktop.MainWindow = provider.GetService<FilesView>();
         }
-
+        
         base.OnFrameworkInitializationCompleted();
     }
 }

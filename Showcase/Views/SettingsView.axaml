@@ -1,0 +1,172 @@
+﻿<Window
+    x:Class="Showcase.Views.SettingsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Showcase.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+    xmlns:fluentAvalonia="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Showcase.ViewModels"
+    Title="Settings"
+    Width="700"
+    Height="470"
+    x:DataType="viewModels:SettingsViewModel"
+    CanResize="False"
+    Icon="/Assets/showcase-pdf-logo.ico"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Grid ColumnDefinitions="Auto,*">
+        <StackPanel
+            Grid.Column="0"
+            Width="150"
+            Margin="12"
+            Spacing="6">
+            <controls:RadioToggleButton
+                x:Name="DisplayMenuItem"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                GroupName="SettingsNavGroup"
+                IsChecked="True"
+                Theme="{DynamicResource TransparentRadioToggleButton}">
+                <StackPanel
+                    Width="130"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="DualScreen" />
+                    <TextBlock HorizontalAlignment="Center" Text="Display" />
+                </StackPanel>
+            </controls:RadioToggleButton>
+            <controls:RadioToggleButton
+                x:Name="StorageMenuItem"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                GroupName="SettingsNavGroup"
+                IsEnabled="False"
+                Theme="{DynamicResource TransparentRadioToggleButton}">
+                <StackPanel
+                    Width="130"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="Storage" />
+                    <TextBlock HorizontalAlignment="Center" Text="Storage" />
+                </StackPanel>
+            </controls:RadioToggleButton>
+            <controls:RadioToggleButton
+                x:Name="UpdateMenuItem"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                GroupName="SettingsNavGroup"
+                IsEnabled="False"
+                Theme="{DynamicResource TransparentRadioToggleButton}">
+                <StackPanel
+                    Width="130"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="6">
+                    <fluent:SymbolIcon FontSize="18" Symbol="CloudArrowDown" />
+                    <TextBlock HorizontalAlignment="Center" Text="Update" />
+                </StackPanel>
+            </controls:RadioToggleButton>
+        </StackPanel>
+        <Grid Grid.Column="1" Background="#171717">
+            <Grid IsVisible="{Binding #DisplayMenuItem.IsChecked}">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12" Spacing="12">
+                        <Grid>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="#5e5757"
+                                Text="Displays" />
+                            <Button HorizontalAlignment="Right" Command="{Binding ReScanCommand}">
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="6">
+                                    <fluent:SymbolIcon FontSize="18" Symbol="ArrowClockwise" />
+                                    <TextBlock HorizontalAlignment="Center" Text="Re-scan" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <ItemsControl ItemsSource="{Binding DisplayManager.Displays}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="12" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="entities:Display">
+                                    <controls:DisplayListItem DataContext="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            <Grid IsVisible="{Binding #StorageMenuItem.IsChecked}">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12">
+                        <fluentAvalonia:SettingsExpander
+                            Description="You can enable up to 2 display screens"
+                            Header="Choose which displays show the content"
+                            IsExpanded="True">
+                            <fluentAvalonia:SettingsExpander.IconSource>
+                                <fluent:SymbolIconSource Symbol="DualScreen" />
+                            </fluentAvalonia:SettingsExpander.IconSource>
+                            <fluentAvalonia:SettingsExpanderItem Content="Display 1" Description="1920x1080">
+                                <fluentAvalonia:SettingsExpanderItem.Footer>
+                                    <ToggleButton Content="Enable" />
+                                </fluentAvalonia:SettingsExpanderItem.Footer>
+                            </fluentAvalonia:SettingsExpanderItem>
+                            <fluentAvalonia:SettingsExpanderItem Content="Display 2" Description="1920x1080">
+                                <fluentAvalonia:SettingsExpanderItem.Footer>
+                                    <ToggleButton Content="Enable" />
+                                </fluentAvalonia:SettingsExpanderItem.Footer>
+                            </fluentAvalonia:SettingsExpanderItem>
+                            <fluentAvalonia:SettingsExpanderItem Content="Display 3" Description="1920x1080">
+                                <fluentAvalonia:SettingsExpanderItem.Footer>
+                                    <ToggleButton Content="Enable" />
+                                </fluentAvalonia:SettingsExpanderItem.Footer>
+                            </fluentAvalonia:SettingsExpanderItem>
+                        </fluentAvalonia:SettingsExpander>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            <Grid IsVisible="{Binding #UpdateMenuItem.IsChecked}">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12">
+                        <fluentAvalonia:SettingsExpander
+                            Description="You can enable up to 2 display screens"
+                            Header="Choose which displays show the content"
+                            IsExpanded="True">
+                            <fluentAvalonia:SettingsExpander.IconSource>
+                                <fluent:SymbolIconSource Symbol="DualScreen" />
+                            </fluentAvalonia:SettingsExpander.IconSource>
+                            <fluentAvalonia:SettingsExpanderItem Content="Display 1" Description="1920x1080">
+                                <fluentAvalonia:SettingsExpanderItem.Footer>
+                                    <ToggleButton Content="Enable" />
+                                </fluentAvalonia:SettingsExpanderItem.Footer>
+                            </fluentAvalonia:SettingsExpanderItem>
+                            <fluentAvalonia:SettingsExpanderItem Content="Display 2" Description="1920x1080">
+                                <fluentAvalonia:SettingsExpanderItem.Footer>
+                                    <ToggleButton Content="Enable" />
+                                </fluentAvalonia:SettingsExpanderItem.Footer>
+                            </fluentAvalonia:SettingsExpanderItem>
+                            <fluentAvalonia:SettingsExpanderItem Content="Display 3" Description="1920x1080">
+                                <fluentAvalonia:SettingsExpanderItem.Footer>
+                                    <ToggleButton Content="Enable" />
+                                </fluentAvalonia:SettingsExpanderItem.Footer>
+                            </fluentAvalonia:SettingsExpanderItem>
+                        </fluentAvalonia:SettingsExpander>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -20,14 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
-using Showcase.Models.Entities;
+using Avalonia.Controls;
+using CommunityToolkit.Mvvm.Messaging;
+using Showcase.Models.Messages;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.Views.Controls;
 
-public interface IAppConfig
+public partial class ScreenDisplay : UserControl
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
+    public ScreenDisplay()
+    {
+        WeakReferenceMessenger
+            .Default
+            .Register<TransitionChangedMessage>(this, OnTransitionChanged);
+        InitializeComponent();
+    }
+    
+    private void OnTransitionChanged(object recipient, TransitionChangedMessage message)
+    {
+        InitializeComponent();
+    }
+
 }

@@ -21,13 +21,11 @@
 // SOFTWARE.
 
 using System.Collections.Generic;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Showcase.Models.Entities;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.Models.Messages;
 
-public interface IAppConfig
+public class DisplaysChangedMessage : RequestMessage<IEnumerable<Display>>
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
 }

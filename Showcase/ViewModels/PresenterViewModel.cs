@@ -34,6 +34,7 @@ using Showcase.Models.Entities;
 using Showcase.Models.Messages;
 using Showcase.Services.Configuration.Interfaces;
 using Showcase.Services.Datastore.Interfaces;
+using Showcase.Services.DisplayManager.Interfaces;
 using Showcase.Services.WindowManager.Interfaces;
 using Showcase.Utilities.Extensions;
 
@@ -43,9 +44,11 @@ public partial class PresenterViewModel : ObservableObject
 {
     private readonly IAppConfig _appConfig;
     private readonly IWindowFactory _windowFactory;
+    private readonly IDisplayManager _displayManager;
     private readonly IPresentationStore _presentationStore;
     private readonly DebounceDispatcher _debounceDispatcher = new(300);
 
+    [ObservableProperty] private bool _live;
     [ObservableProperty] private ShowcaseSlide? _activeSlide;
     [ObservableProperty] private IPageTransition? _transition;
     [ObservableProperty] private TransitionDuration? _duration;
@@ -56,10 +59,12 @@ public partial class PresenterViewModel : ObservableObject
     public PresenterViewModel(
         IAppConfig appConfig,
         IWindowFactory windowFactory,
+        IDisplayManager displayManager,
         IPresentationStore presentationStore)
     {
         _appConfig = appConfig;
         _windowFactory = windowFactory;
+        _displayManager = displayManager;
         _presentationStore = presentationStore;
 
         Durations = TransitionDurations
@@ -93,6 +98,14 @@ public partial class PresenterViewModel : ObservableObject
         WeakReferenceMessenger
             .Default
             .Register<SlideUpdatedMessage>(this, OnSlideUpdated);
+        
+        WeakReferenceMessenger
+            .Default
+            .Register<EnableDisplayMessage>(this, OnDisplayEnabled);
+        
+        WeakReferenceMessenger
+            .Default
+            .Register<DisabledDisplayMessage>(this, OnDisplayDisabled);
     }
 
     [RelayCommand]
@@ -157,6 +170,29 @@ public partial class PresenterViewModel : ObservableObject
         _windowFactory.CreateAboutWindow();
     }
 
+    [RelayCommand]
+    async Task OpenSettings()
+    {
+        _windowFactory.CreateSettingsWindow();
+    }
+
+    partial void OnLiveChanged(bool value)
+    {
+        WeakReferenceMessenger
+            .Default
+            .Send(new LiveChangedMessage(value));
+        
+        if (!value) return;
+        
+        WeakReferenceMessenger
+            .Default
+            .Send(new TransitionChangedMessage(Transition));
+            
+        WeakReferenceMessenger
+            .Default
+            .Send(new SlideChangedMessage(ActiveSlide));
+    }
+
     private async void OnSlideUpdated(object recipient, SlideUpdatedMessage message)
     {
         await _debounceDispatcher.DebounceAsync(() => _presentationStore.UpdatePresentation(ActivePresentation));
@@ -179,15 +215,9 @@ public partial class PresenterViewModel : ObservableObject
                 "Transition",
                 string.Empty,
                 StringComparison.OrdinalIgnoreCase);
-
-        _appConfig.Transition = ((object)transition)
-            .GetType()
-            .Name
-            .Replace(
-                "Transition",
-                string.Empty,
-                StringComparison.OrdinalIgnoreCase);
-
+        
+        Transition = transition;
+        
         WeakReferenceMessenger
             .Default
             .Send(
@@ -204,7 +234,8 @@ public partial class PresenterViewModel : ObservableObject
         dynamic transition = Transition;
         transition.Duration = duration.Duration;
         _appConfig.Duration = duration.Name;
-
+        Transition = transition;
+        
         WeakReferenceMessenger
             .Default
             .Send(
@@ -221,4 +252,15 @@ public partial class PresenterViewModel : ObservableObject
         ActiveSlide = null;
         ActivePresentation = message.Value;
     }
+    
+    private void OnDisplayDisabled(object recipient, DisabledDisplayMessage message)
+    {
+        _displayManager.CloseDisplay(message.Value);
+    }
+
+    private void OnDisplayEnabled(object recipient, EnableDisplayMessage message)
+    {
+        _displayManager.CreateDisplay(message.Value);
+    }
+
 }

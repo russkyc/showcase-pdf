@@ -3,40 +3,48 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Showcase.Views.Controls"
-    xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Showcase.ViewModels"
-    xmlns:views="clr-namespace:Showcase.Views"
     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Title="ScreenView"
-    x:DataType="viewModels:PresenterViewModel"
+    d:DesignHeight="1080"
+    d:DesignWidth="1920"
+    x:DataType="viewModels:ScreenViewModel"
+    Background="Black"
     CanResize="False"
-    ExtendClientAreaToDecorationsHint="True"
     Icon="/Assets/showcase-pdf-logo.ico"
+    IsTabStop="False"
     RenderOptions.BitmapInterpolationMode="HighQuality"
     RenderOptions.RequiresFullOpacityHandling="False"
     ShowInTaskbar="False"
     SystemDecorations="None"
-    WindowState="Maximized"
+    Topmost="True"
+    WindowState="FullScreen"
     mc:Ignorable="d">
-    <Grid Background="Black">
-        <controls:Display DataContext="{Binding}" />
-        <Viewbox>
-            <Border
-                Width="{Binding $parent[views:ScreenView].Bounds.Width}"
-                Height="{Binding $parent[views:ScreenView].Bounds.Height}"
-                BorderBrush="Red"
-                BorderThickness="20">
-                <TextBlock
-                    Margin="20"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    FontSize="100"
-                    FontWeight="Black"
-                    Foreground="Red"
-                    Text="{Binding $parent[Window], Converter={x:Static converters:WindowToScreenIndexConverter.Instance}}" />
-            </Border>
-        </Viewbox>
+    <Grid>
+        <controls:ScreenDisplay DataContext="{Binding}" />
+        <Button
+            Margin="12"
+            Padding="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Click="Button_OnClick">
+            <Button.Styles>
+                <Style Selector="Button">
+                    <Setter Property="Opacity" Value="0" />
+                </Style>
+                <Style Selector="Button:pointerover">
+                    <Setter Property="Opacity" Value="1" />
+                </Style>
+            </Button.Styles>
+            <ToolTip.Tip>
+                <StackPanel>
+                    <TextBlock Text="Close Display" />
+                </StackPanel>
+            </ToolTip.Tip>
+            <fluent:SymbolIcon FontSize="26" Symbol="ShareScreenStop" />
+        </Button>
     </Grid>
 </windowing:AppWindow>

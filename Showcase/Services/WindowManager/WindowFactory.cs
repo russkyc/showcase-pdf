@@ -24,10 +24,9 @@ using System;
 using System.Linq;
 using Avalonia;
 using Microsoft.Extensions.DependencyInjection;
+using Showcase.Models.Entities;
 using Showcase.Services.WindowManager.Interfaces;
-using Showcase.Utilities;
 using Showcase.Utilities.Extensions;
-using Showcase.ViewModels;
 using Showcase.Views;
 
 namespace Showcase.Services.WindowManager;
@@ -55,11 +54,8 @@ public class WindowFactory : IWindowFactory
             return;
         }
         
-        var window = new PresenterView();
-        window.DataContext = _serviceProvider.GetService<PresenterViewModel>();
+        var window = _serviceProvider.GetService<PresenterView>();
         window.Show();
-        
-        CreateScreenWindow(1);
         
         Application
             .Current
@@ -68,7 +64,7 @@ public class WindowFactory : IWindowFactory
 
     }
 
-    public void CreateScreenWindow(int display)
+    public void CreateScreenWindow(Display display)
     {
         if (!Application
             .Current
@@ -77,45 +73,38 @@ public class WindowFactory : IWindowFactory
             return;
         }
         
-        var presenter = Application
-            .Current
-            .GetActiveWindow<PresenterView>();
-
-        if (presenter.Screens.ScreenCount == 1) return;
-        var screen = presenter.Screens.All[display];
-
         if (Application
             .Current
             .GetWindows()
             .OfType<ScreenView>()
             .Any(
-                window => window
-                    .Screens
-                    .ScreenFromWindow(window)
-                    .HasSameBounds(screen)))
+                window =>
+                {
+                    var screen = window
+                        .Screens
+                        .ScreenFromWindow(window);
+                    return screen.Bounds.X == display.BoundsX
+                           && screen.Bounds.Y == display.BoundsY;
+                }))
         {
             return;
         }
 
-        var viewModel = _serviceProvider.GetService<PresenterViewModel>();
-
-        var window = new ScreenView();
+        var presenter = Application.Current.GetActiveWindow<PresenterView>();
+        var window = _serviceProvider.GetService<ScreenView>();
+        
         presenter.Closing += (sender, args) => window.Close();
 
-        window.DataContext = viewModel;
-        window.IsHitTestVisible = false;
-        window.Width = screen.WorkingArea.Width;
-        window.Height = screen.WorkingArea.Height;
-        window.Position = new PixelPoint(screen.WorkingArea.X, screen.WorkingArea.Y);
-
-        window.Show(presenter);
+        window.Width = display.Width;
+        window.Height = display.Height;
+        window.Position = new PixelPoint(display.BoundsX, display.BoundsY);
+        window.Show();
         presenter.Activate();
     }
 
     public void CreateStartupWindow()
     {
-        var window = new FilesView();
-        window.DataContext = _serviceProvider.GetService<FilesViewModel>();
+        var window = _serviceProvider.GetService<FilesView>();
         
         if (Application
             .Current
@@ -130,6 +119,13 @@ public class WindowFactory : IWindowFactory
 
     public void CreateAboutWindow()
     {
-        new AboutView().ShowDialog(Application.Current.GetActiveWindow());
+        var window = _serviceProvider.GetService<AboutView>();
+        window.ShowDialog(Application.Current.GetActiveWindow());
+    }
+    
+    public void CreateSettingsWindow()
+    {
+        var window = _serviceProvider.GetService<SettingsView>();
+        window.ShowDialog(Application.Current.GetActiveWindow());
     }
 }

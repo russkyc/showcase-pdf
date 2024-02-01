@@ -20,7 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Collections.Generic;
 using Russkyc.Configuration;
+using Showcase.Models.Entities;
 using Showcase.Services.Configuration.Interfaces;
 
 namespace Showcase.Services.Configuration;
@@ -39,5 +41,11 @@ public class AppConfig : ConfigProvider, IAppConfig
     {
         get => GetValue<string>(nameof(Duration));
         set => SetValue(nameof(Duration), value);
+    }
+
+    public List<Display> Displays
+    {
+        get => GetValue<List<Display>>(nameof(Displays));
+        set => SetValue(nameof(Displays), value);
     }
 }

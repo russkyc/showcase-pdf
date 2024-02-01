@@ -20,14 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
-using Showcase.Models.Entities;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Showcase.Services.DisplayManager.Interfaces;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.ViewModels;
 
-public interface IAppConfig
+public partial class SettingsViewModel : ObservableObject
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
+    [ObservableProperty] private IDisplayManager _displayManager;
+
+    public SettingsViewModel(IDisplayManager displayManager)
+    {
+        DisplayManager = displayManager;
+    }
+
+    [RelayCommand]
+    void ReScan()
+    {
+        _displayManager.RefreshDisplays();
+    }
 }

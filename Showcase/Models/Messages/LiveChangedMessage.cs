@@ -20,14 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
-using Showcase.Models.Entities;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.Models.Messages;
 
-public interface IAppConfig
+public class LiveChangedMessage : ValueChangedMessage<bool>
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
+    public LiveChangedMessage(bool value) : base(value)
+    {
+    }
 }

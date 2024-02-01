@@ -20,14 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
-using Showcase.Models.Entities;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.Views.Controls;
 
-public interface IAppConfig
+public partial class DisplayListItem : UserControl
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
+    public DisplayListItem()
+    {
+        InitializeComponent();
+    }
 }

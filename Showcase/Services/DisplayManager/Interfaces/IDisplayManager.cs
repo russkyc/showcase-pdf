@@ -20,14 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Showcase.Models.Entities;
 
-namespace Showcase.Services.Configuration.Interfaces;
+namespace Showcase.Services.DisplayManager.Interfaces;
 
-public interface IAppConfig
+public interface IDisplayManager
 {
-    string Transition { get; set; }
-    string Duration { get; set; }
-    List<Display> Displays { get; set; }
+    void RefreshDisplays();
+    void CreateDisplay(Display display);
+    void CloseDisplay(Display display);
+
+    /// <inheritdoc cref="DisplayManager._displays"/>
+    global::System.Collections.ObjectModel.ObservableCollection<global::Showcase.Models.Entities.Display>? Displays { get; set; }
 }
