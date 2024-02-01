@@ -20,24 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Showcase.Services.DisplayManager.Interfaces;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using Showcase.Models.Entities;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Models.Messages;
 
-public partial class SettingsViewModel : ObservableObject
+public class DisabledDisplayMessage : ValueChangedMessage<Display>
 {
-    [ObservableProperty] private IDisplayManager _displayManager;
-
-    public SettingsViewModel(IDisplayManager displayManager)
+    public DisabledDisplayMessage(Display value) : base(value)
     {
-        DisplayManager = displayManager;
-    }
-
-    [RelayCommand]
-    void ReScan()
-    {
-        _displayManager.RefreshDisplays();
     }
 }

@@ -25,6 +25,8 @@ using Showcase.Services.Configuration;
 using Showcase.Services.Configuration.Interfaces;
 using Showcase.Services.Datastore;
 using Showcase.Services.Datastore.Interfaces;
+using Showcase.Services.DisplayManager;
+using Showcase.Services.DisplayManager.Interfaces;
 using Showcase.Services.PdfReader;
 using Showcase.Services.PdfReader.Interfaces;
 using Showcase.Services.WindowManager;
@@ -38,37 +40,55 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddShowcaseViews(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton(services => new FilesView()
+        serviceCollection.AddTransient(services => new FilesView()
         {
             DataContext = services.GetService<FilesViewModel>()
         });
-        serviceCollection.AddSingleton(services => new PresenterView()
+        serviceCollection.AddTransient(services => new PresenterView()
         {
             DataContext = services.GetService<PresenterViewModel>()
         });
-        serviceCollection.AddSingleton(services => new ScreenView()
+        serviceCollection.AddTransient(services => new ScreenView()
         {
-            DataContext = services.GetService<PresenterViewModel>()
+            DataContext = services.GetService<ScreenViewModel>()
         });
-        
+        serviceCollection.AddTransient(services => new SettingsView()
+        {
+            DataContext = services.GetService<SettingsViewModel>()
+        });
+        serviceCollection.AddTransient(_ => new AboutView());
         return serviceCollection;
     }
-    
+
     public static IServiceCollection AddShowcaseViewModels(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<FilesViewModel>();
-        serviceCollection.AddSingleton<PresenterViewModel>();
-        
+        serviceCollection.AddSingleton(
+            services => new FilesViewModel(
+                services.GetService<IPdfManager>(),
+                services.GetService<IWindowFactory>(),
+                services.GetService<IPresentationStore>()));
+        serviceCollection.AddSingleton(
+            services => new SettingsViewModel(
+                services.GetService<IDisplayManager>()));
+        serviceCollection.AddSingleton(
+            services => new PresenterViewModel(
+                services.GetService<IAppConfig>(),
+                services.GetService<IWindowFactory>(),
+                services.GetService<IDisplayManager>(),
+                services.GetService<IPresentationStore>()));
+        serviceCollection.AddSingleton(_ => new ScreenViewModel());
+
         return serviceCollection;
     }
 
     public static IServiceCollection AddShowcaseServices(this IServiceCollection serviceCollection)
     {
+        serviceCollection.AddSingleton<IAppConfig, AppConfig>(_ => new AppConfig("config.json"));
         serviceCollection.AddSingleton<IPresentationStore, PresentationStore>();
+        serviceCollection.AddSingleton<IDisplayManager, DisplayManager>();
         serviceCollection.AddSingleton<IWindowFactory, WindowFactory>();
         serviceCollection.AddSingleton<IPdfManager, PdfManager>();
-        serviceCollection.AddSingleton<IAppConfig, AppConfig>(_ => new AppConfig("config.json"));
-        
+
         return serviceCollection;
     }
 }

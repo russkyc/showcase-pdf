@@ -20,24 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Showcase.Services.DisplayManager.Interfaces;
+using System.Collections.ObjectModel;
+using Showcase.Models.Entities;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Services.DisplayManager.Interfaces;
 
-public partial class SettingsViewModel : ObservableObject
+public interface IDisplayManager
 {
-    [ObservableProperty] private IDisplayManager _displayManager;
+    void RefreshDisplays();
+    void CreateDisplay(Display display);
+    void CloseDisplay(Display display);
 
-    public SettingsViewModel(IDisplayManager displayManager)
-    {
-        DisplayManager = displayManager;
-    }
-
-    [RelayCommand]
-    void ReScan()
-    {
-        _displayManager.RefreshDisplays();
-    }
+    /// <inheritdoc cref="DisplayManager._displays"/>
+    global::System.Collections.ObjectModel.ObservableCollection<global::Showcase.Models.Entities.Display>? Displays { get; set; }
 }

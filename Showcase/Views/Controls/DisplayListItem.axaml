@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="Showcase.Views.Controls.DisplayListItem"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignWidth="300"
+    x:DataType="entities:Display"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Border Background="#202020" CornerRadius="5">
+        <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+            <Grid Grid.Column="0">
+                <fluent:SymbolIcon
+                    Margin="12,8"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="48"
+                    Symbol="Tv" />
+            </Grid>
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Spacing="4">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding Name}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Foreground="#787875"
+                        IsVisible="{Binding Primary}"
+                        Text="(Primary)" />
+                </StackPanel>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="#787875"
+                    Text="{Binding Converter={x:Static converters:DisplayToResolutionConverter.Instance}}" />
+            </StackPanel>
+            <ToggleButton
+                Grid.Column="3"
+                Margin="16,12"
+                HorizontalAlignment="Right"
+                Content="Enable"
+                IsChecked="{Binding Enabled}" />
+        </Grid>
+    </Border>
+</UserControl>

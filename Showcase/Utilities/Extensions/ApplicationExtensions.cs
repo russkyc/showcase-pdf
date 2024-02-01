@@ -28,9 +28,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 
-namespace Showcase.Utilities;
+namespace Showcase.Utilities.Extensions;
 
-public static class AppUtils
+public static class ApplicationExtensions
 {
     public static IStorageProvider GetStorageProvider(this Application application)
     {
@@ -45,13 +45,13 @@ public static class AppUtils
         throw new PlatformNotSupportedException();
     }
     
-    public static Window GetActiveWindow(this Application application)
+    public static Window? GetActiveWindow(this Application application)
     {
         if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
         {
             return desktopStyleApplicationLifetime
                 .Windows
-                .First(window => window.IsActive);
+                .FirstOrDefault(window => window.IsActive);
         }
 
         throw new PlatformNotSupportedException();

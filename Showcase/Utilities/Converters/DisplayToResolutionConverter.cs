@@ -20,24 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Showcase.Services.DisplayManager.Interfaces;
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using Showcase.Models.Entities;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Utilities.Converters;
 
-public partial class SettingsViewModel : ObservableObject
+public class DisplayToResolutionConverter : IValueConverter
 {
-    [ObservableProperty] private IDisplayManager _displayManager;
-
-    public SettingsViewModel(IDisplayManager displayManager)
+    public static DisplayToResolutionConverter Instance = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        DisplayManager = displayManager;
+        if (value is not Display display) return null;
+        return $"{display.Width} x {display.Height}";
     }
 
-    [RelayCommand]
-    void ReScan()
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        _displayManager.RefreshDisplays();
+        return null;
     }
 }

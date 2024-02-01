@@ -20,12 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using Showcase.Models.Entities;
+
 namespace Showcase.Services.WindowManager.Interfaces;
 
 public interface IWindowFactory
 {
     void CreatePresenterWindow();
-    void CreateScreenWindow(int display);
+    void CreateScreenWindow(Display display);
     void CreateStartupWindow();
     void CreateAboutWindow();
     void CreateSettingsWindow();

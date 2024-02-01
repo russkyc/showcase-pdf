@@ -20,10 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Collections.Generic;
+using Showcase.Models.Entities;
+
 namespace Showcase.Services.Configuration.Interfaces;
 
 public interface IAppConfig
 {
     string Transition { get; set; }
     string Duration { get; set; }
+    List<Display> Displays { get; set; }
 }

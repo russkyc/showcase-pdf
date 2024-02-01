@@ -20,24 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Showcase.Services.DisplayManager.Interfaces;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Views.Controls;
 
-public partial class SettingsViewModel : ObservableObject
+public partial class DisplayListItem : UserControl
 {
-    [ObservableProperty] private IDisplayManager _displayManager;
-
-    public SettingsViewModel(IDisplayManager displayManager)
+    public DisplayListItem()
     {
-        DisplayManager = displayManager;
-    }
-
-    [RelayCommand]
-    void ReScan()
-    {
-        _displayManager.RefreshDisplays();
+        InitializeComponent();
     }
 }

@@ -20,24 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Showcase.Services.DisplayManager.Interfaces;
+using Avalonia.Controls;
+using CommunityToolkit.Mvvm.Messaging;
+using Showcase.Models.Messages;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Views.Controls;
 
-public partial class SettingsViewModel : ObservableObject
+public partial class ScreenDisplay : UserControl
 {
-    [ObservableProperty] private IDisplayManager _displayManager;
-
-    public SettingsViewModel(IDisplayManager displayManager)
+    public ScreenDisplay()
     {
-        DisplayManager = displayManager;
+        WeakReferenceMessenger
+            .Default
+            .Register<TransitionChangedMessage>(this, OnTransitionChanged);
+        InitializeComponent();
+    }
+    
+    private void OnTransitionChanged(object recipient, TransitionChangedMessage message)
+    {
+        InitializeComponent();
     }
 
-    [RelayCommand]
-    void ReScan()
-    {
-        _displayManager.RefreshDisplays();
-    }
 }

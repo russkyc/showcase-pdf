@@ -21,23 +21,37 @@
 // SOFTWARE.
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Showcase.Services.DisplayManager.Interfaces;
+using CommunityToolkit.Mvvm.Messaging;
+using Showcase.Models.Messages;
 
-namespace Showcase.ViewModels;
+namespace Showcase.Models.Entities;
 
-public partial class SettingsViewModel : ObservableObject
+public partial class Display : ObservableObject
 {
-    [ObservableProperty] private IDisplayManager _displayManager;
+    public int Id { get; set; }
+    public int Index { get; set; }
+    public string Name { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public int BoundsX { get; set; }
+    public int BoundsY { get; set; }
+    public double Scaling { get; set; }
+    public bool Primary { get; set; }
+    
+    [ObservableProperty] private bool _enabled;
 
-    public SettingsViewModel(IDisplayManager displayManager)
+    partial void OnEnabledChanged(bool value)
     {
-        DisplayManager = displayManager;
-    }
-
-    [RelayCommand]
-    void ReScan()
-    {
-        _displayManager.RefreshDisplays();
+        if (value)
+        {
+            WeakReferenceMessenger
+                .Default
+                .Send(new EnableDisplayMessage(this));
+            return;
+        }
+        
+        WeakReferenceMessenger
+            .Default
+            .Send(new DisabledDisplayMessage(this));
     }
 }

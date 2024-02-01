@@ -29,4 +29,10 @@ public static class CollectionExtensions
 {
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection) =>
         new (collection);
+    
+    public static void ForEach<T>(this IEnumerable<T> list, System.Action<T> action)
+    {
+        foreach (T item in list)
+            action(item);
+    }
 }
