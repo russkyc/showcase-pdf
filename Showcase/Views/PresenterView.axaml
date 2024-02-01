@@ -53,7 +53,10 @@
                     </ToolTip.Tip>
                     <fluent:SymbolIcon Symbol="Info" />
                 </Button>
-                <Button Padding="5" HorizontalAlignment="Stretch">
+                <Button
+                    Padding="5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding OpenSettingsCommand}">
                     <ToolTip.Tip>
                         <StackPanel>
                             <TextBlock Text="Settings" />

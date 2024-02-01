@@ -157,6 +157,12 @@ public partial class PresenterViewModel : ObservableObject
         _windowFactory.CreateAboutWindow();
     }
 
+    [RelayCommand]
+    async Task OpenSettings()
+    {
+        _windowFactory.CreateSettingsWindow();
+    }
+
     private async void OnSlideUpdated(object recipient, SlideUpdatedMessage message)
     {
         await _debounceDispatcher.DebounceAsync(() => _presentationStore.UpdatePresentation(ActivePresentation));

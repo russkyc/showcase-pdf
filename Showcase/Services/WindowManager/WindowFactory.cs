@@ -132,4 +132,9 @@ public class WindowFactory : IWindowFactory
     {
         new AboutView().ShowDialog(Application.Current.GetActiveWindow());
     }
+    
+    public void CreateSettingsWindow()
+    {
+        new SettingsView().ShowDialog(Application.Current.GetActiveWindow());
+    }
 }
