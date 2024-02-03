@@ -113,7 +113,7 @@ jobs:
           body: 'Latest Linux builds for Showcase PDF'
           tag_name: 'v${{ steps.package_version.outputs.version }}-linux'
           files: |
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.appimage
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.deb
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.rpm
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.zip
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.appimage
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.deb
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.rpm
