@@ -11,6 +11,8 @@ on:
 
 jobs:
   build-windows:
+    permissions:
+      contents: write
     runs-on: windows-latest
     steps:
       - name: Checkout
