@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{35085B52
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resource", "resource", "{4F7F613F-F994-4562-8DE1-F1B2E664EF93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Showcase.Tests", "Showcase.Tests\Showcase.Tests.csproj", "{E100FD1B-D470-45CD-ABC9-717A3873AFE5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,13 +18,8 @@ Global
 		{A9DA116E-5C07-4F22-A79B-0E85D3407B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9DA116E-5C07-4F22-A79B-0E85D3407B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9DA116E-5C07-4F22-A79B-0E85D3407B3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E100FD1B-D470-45CD-ABC9-717A3873AFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E100FD1B-D470-45CD-ABC9-717A3873AFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E100FD1B-D470-45CD-ABC9-717A3873AFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E100FD1B-D470-45CD-ABC9-717A3873AFE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A9DA116E-5C07-4F22-A79B-0E85D3407B3E} = {C42DE54E-4D13-4ABF-9720-122BCCB555E7}
-		{E100FD1B-D470-45CD-ABC9-717A3873AFE5} = {35085B52-B3BC-44F4-870F-71412F5D4DE2}
 	EndGlobalSection
 EndGlobal
