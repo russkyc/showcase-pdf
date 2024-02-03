@@ -28,6 +28,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Showcase.Models.Entities;
 using Showcase.Models.Messages;
+using Showcase.Services.Configuration.Interfaces;
 using Showcase.Services.DisplayManager.Interfaces;
 using Showcase.Services.WindowManager.Interfaces;
 using Showcase.Utilities.Extensions;
@@ -37,27 +38,26 @@ namespace Showcase.Services.DisplayManager;
 
 public partial class DisplayManager : ObservableObject, IDisplayManager
 {
+    private readonly IAppConfig _appConfig;
     private readonly IWindowFactory _windowFactory;
-    [ObservableProperty] private ObservableCollection<Display>? _displays;
+    [ObservableProperty] private ObservableCollection<Display>? _displays = new();
 
-    public DisplayManager(IWindowFactory windowFactory)
+    public DisplayManager(
+        IWindowFactory windowFactory,
+        IAppConfig appConfig)
     {
         _windowFactory = windowFactory;
+        _appConfig = appConfig;
+        
         WeakReferenceMessenger
             .Default
             .Register<DisplaysChangedMessage>(this, OnDisplaysUpdated);
+        
         RefreshDisplays();
     }
 
     public void RefreshDisplays()
     {
-        if (Displays is null)
-        {
-            Displays = GetDisplays()
-                .ToObservableCollection();
-            return;
-        }
-
         Displays = GetDisplays()
             .Select(display =>
             {
@@ -67,6 +67,15 @@ public partial class DisplayManager : ObservableObject, IDisplayManager
                 if (currentDisplay is not null)
                 {
                     display.Enabled = currentDisplay.Enabled;
+                }
+
+                if (_appConfig.Displays.Any(savedDisplay => savedDisplay.Index == display.Index))
+                {
+                    var savedDisplay = _appConfig
+                        .Displays
+                        .First(
+                            savedDisplay => savedDisplay.Index == display.Index);
+                    display.Enabled = savedDisplay.Enabled;
                 }
 
                 return display;
@@ -82,6 +91,7 @@ public partial class DisplayManager : ObservableObject, IDisplayManager
 
     public void CreateDisplay(Display display)
     {
+        _appConfig.Displays = Displays.Where(display => display.Enabled).ToList();
         _windowFactory.CreateScreenWindow(display);
     }
 
@@ -100,6 +110,7 @@ public partial class DisplayManager : ObservableObject, IDisplayManager
                        && screen.Bounds.Y == display.BoundsY;
             })
             .Close();
+        _appConfig.Displays = Displays.Where(display => display.Enabled).ToList();
     }
 
     IEnumerable<Display> GetDisplays()

@@ -113,8 +113,6 @@ public partial class FilesViewModel : ObservableObject
         
         _windowFactory.CreatePresenterWindow();
 
-        await Task.Delay(500);
-
         WeakReferenceMessenger
             .Default
             .Send(new PresentationOpenedMessage(presentation));

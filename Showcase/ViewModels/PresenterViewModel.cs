@@ -251,6 +251,13 @@ public partial class PresenterViewModel : ObservableObject
     {
         ActiveSlide = null;
         ActivePresentation = message.Value;
+        _displayManager.Displays.ForEach(display =>
+        {
+            if (display.Enabled)
+            {
+                _displayManager.CreateDisplay(display);
+            }
+        });
     }
     
     private void OnDisplayDisabled(object recipient, DisabledDisplayMessage message)

@@ -29,8 +29,6 @@ public interface IDisplayManager
 {
     void RefreshDisplays();
     void CreateDisplay(Display display);
-    void CloseDisplay(Display display);
-
-    /// <inheritdoc cref="DisplayManager._displays"/>
-    global::System.Collections.ObjectModel.ObservableCollection<global::Showcase.Models.Entities.Display>? Displays { get; set; }
+    void CloseDisplay(Display display); 
+    ObservableCollection<Display>? Displays { get; set; }
 }

@@ -22,10 +22,9 @@
 
 using System;
 using System.Globalization;
-using Avalonia.Controls;
+using System.IO;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 
 namespace Showcase.Utilities.Converters;
 
@@ -36,7 +35,8 @@ public class SourceToBitmapConverter : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not string source) return null;
-        return new Bitmap(source);
+        using var stream = File.Open(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        return new Bitmap(stream);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

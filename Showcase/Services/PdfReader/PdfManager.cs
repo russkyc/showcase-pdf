@@ -73,9 +73,10 @@ public class PdfManager : IPdfManager
             presentation.DataFolder.CreateDirectoryIfNotExists();
             var filePath = $"{presentation.DataFolder}{Guid.NewGuid()}";
 
+            await using var stream = new FileStream(filePath, FileMode.Create);
             await Task.Run(() =>
                 skBitmap.Encode(SKEncodedImageFormat.Webp, 95)
-                    .SaveTo(new FileStream(filePath, FileMode.Create)));
+                    .SaveTo(stream));
 
             slides.Add(new ShowcaseSlide
             {
