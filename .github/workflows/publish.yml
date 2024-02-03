@@ -30,7 +30,7 @@ jobs:
         id: package_version
         uses: KageKirin/get-csproj-version@v0
         with:
-          file: D:/a/showcase-pdf/showcase-pdf/Showcase.csproj
+          file: D:\a\showcase-pdf\showcase-pdf\Showcase\Showcase.csproj
           
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
