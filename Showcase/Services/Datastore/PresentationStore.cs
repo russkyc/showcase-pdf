@@ -32,7 +32,12 @@ namespace Showcase.Services.Datastore;
 
 public class PresentationStore : IPresentationStore
 {
-    private IDataStore _dataStore = new DataStore($@"{Environment.CurrentDirectory}\data.json");
+    private IDataStore _dataStore;
+
+    public PresentationStore(IDataStore dataStore)
+    {
+        _dataStore = dataStore;
+    }
 
     public IEnumerable<ShowcasePresentation> GetPresentations()
     {
