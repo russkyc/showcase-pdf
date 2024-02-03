@@ -50,7 +50,7 @@ jobs:
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
-          name: '🎉 Showcase PDF ${{ steps.package_version.outputs.version }} Release'
+          name: '🎉 Showcase PDF ${{ steps.package_version.outputs.version }} Windows Release'
           body: 'Latest binary releases for Showcase PDF'
           tag_name: 'v${{ steps.package_version.outputs.version }}'
           files: |
@@ -58,3 +58,47 @@ jobs:
             D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
             D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x86.exe
             D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x64.exe
+            
+  build-linux:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Get version
+        id: package_version
+        uses: KageKirin/get-csproj-version@v0
+        with:
+          file: D:\a\showcase-pdf\showcase-pdf\Showcase\Showcase.csproj
+
+      - name: Setup PupNet
+        run: dotnet tool install -g KuiperZone.PupNet
+
+      - name: Build x86 Zip
+        run: pupnet -r win-x86 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.zip
+
+      - name: Build x64 Zip
+        run: pupnet -r win-x64 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
+
+      - name: Build x86 Setup
+        run: pupnet -r win-x86 -y -k setup -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x86.exe
+
+      - name: Build x64 Setup
+        run: pupnet -r win-x64 -y -k setup -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x64.exe
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: '🎉 Showcase PDF ${{ steps.package_version.outputs.version }} Linux Release'
+          body: 'Latest binary releases for Showcase PDF'
+          tag_name: 'v${{ steps.package_version.outputs.version }}'
