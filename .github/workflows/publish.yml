@@ -87,7 +87,10 @@ jobs:
 
       - name: Install Rpm
         run: sudo apt install rpm
-      
+
+      - name: Install Fuse
+        run: sudo apt install fuse libfuse2
+
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
 
