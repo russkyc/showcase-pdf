@@ -1,0 +1,36 @@
+﻿# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Publish
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+          
+      - name: Setup PupNet
+        run: dotnet tool install -g KuiperZone.PupNet
+        
+      - name: Build x86 Zip
+        run: pupnet -r win-x86 -y -k zip
+
+      - name: Build x64 Zetup
+        run: pupnet -r win-x64 -y -k zip
+
+      - name: Build x86 Setup
+        run: pupnet -r win-x86 -y -k setup
+        
+      - name: Build x64 Setup
+        run: pupnet -r win-x64 -y -k setup
