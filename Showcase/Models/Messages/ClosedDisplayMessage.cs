@@ -20,29 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using CommunityToolkit.Mvvm.Messaging;
-using Humanizer;
-using Showcase.Models.Messages;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace Showcase.Views;
+namespace Showcase.Models.Messages;
 
-public partial class ScreenView : Window
+public class ClosedDisplayMessage : ValueChangedMessage<int>
 {
-    public int Index { get; set; }
-    
-    public ScreenView()
+    public ClosedDisplayMessage(int value) : base(value)
     {
-        InitializeComponent();
-    }
-
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        WeakReferenceMessenger
-            .Default
-            .Send(new ClosedDisplayMessage(Index));
-        
-        Close();
     }
 }

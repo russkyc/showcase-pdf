@@ -40,6 +40,21 @@ public partial class Display : ObservableObject
     
     [ObservableProperty] private bool _enabled;
 
+    public Display()
+    {
+        WeakReferenceMessenger
+            .Default
+            .Register<ClosedDisplayMessage>(this, OnDisplayClosed);
+    }
+
+    private void OnDisplayClosed(object recipient, ClosedDisplayMessage message)
+    {
+        if (message.Value == Index)
+        {
+            Enabled = false;
+        }
+    }
+
     partial void OnEnabledChanged(bool value)
     {
         if (value)

@@ -95,6 +95,7 @@ public class WindowFactory : IWindowFactory
         
         presenter.Closing += (sender, args) => window.Close();
 
+        window.Index = display.Index;
         window.Width = display.Width;
         window.Height = display.Height;
         window.Position = new PixelPoint(display.BoundsX, display.BoundsY);
