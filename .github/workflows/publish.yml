@@ -13,24 +13,37 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
           
+      - name: Restore Dependencies
+        run: dotnet restore
+          
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
         
       - name: Build x86 Zip
-        run: pupnet -r win-x86 -y -k zip
-
-      - name: Build x64 Zetup
-        run: pupnet -r win-x64 -y -k zip
+        run: pupnet -r win-x86 -y -k zip -o showcase-pdf-win-x86.zip
+      
+      - name: Build x64 Zip
+        run: pupnet -r win-x64 -y -k zip -o showcase-pdf-win-x64.zip
 
       - name: Build x86 Setup
-        run: pupnet -r win-x86 -y -k setup
+        run: pupnet -r win-x86 -y -k setup -o showcase-pdf-win-installer-x86.exe
         
       - name: Build x64 Setup
-        run: pupnet -r win-x64 -y -k setup
+        run: pupnet -r win-x64 -y -k setup -o showcase-pdf-win-installer-x64.exe
+  
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-x86.zip
+            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-x64.zip
+            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-installer-x86.exe
+            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-installer-x64.exe
