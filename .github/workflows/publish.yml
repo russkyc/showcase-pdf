@@ -84,21 +84,12 @@ jobs:
           
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
-        
-      - name: Build x86 Zip
-        run: pupnet Showcase.Pupnet.conf -r linux-x86 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x86.zip
-      
+
       - name: Build x64 Zip
         run: pupnet Showcase.Pupnet.conf -r linux-x64 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.zip
 
-      - name: Build x86 AppImage
-        run: pupnet Showcase.Pupnet.conf -r linux-x86 -y -k appimage -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x86.appimage
-        
       - name: Build x64 AppImage
         run: pupnet Showcase.Pupnet.conf -r linux-x64 -y -k appimage -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.appimage
-
-      - name: Build x86 Deb
-        run: pupnet Showcase.Pupnet.conf -r linux-x86 -y -k deb -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x86.deb
 
       - name: Build x64 Deb
         run: pupnet Showcase.Pupnet.conf -r linux-x64 -y -k deb -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.deb
@@ -110,9 +101,6 @@ jobs:
           body: 'Latest Linux builds for Showcase PDF'
           tag_name: 'v${{ steps.package_version.outputs.version }}-linux'
           files: |
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.zip
             /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.appimage
             /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.appimage
-            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.deb
             /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.deb
