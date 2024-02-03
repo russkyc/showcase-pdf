@@ -82,6 +82,18 @@ jobs:
         with:
           file: /home/runner/work/showcase-pdf/showcase-pdf/Showcase/Showcase.csproj
           
+      - name: Install Flatpak Builder
+        run: sudo apt install flatpak flatpak-builder
+
+      - name: Install Dpkg
+        run: sudo apt install dpkg
+
+      - name: Install Rpm
+        run: sudo apt install rpm
+      
+      - name: Install Flathub
+        run: sudo flatpak install flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
+      
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
 
@@ -93,6 +105,9 @@ jobs:
 
       - name: Build x64 Deb
         run: pupnet Showcase.Pupnet.conf -r linux-x64 -y -k deb -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.deb
+
+      - name: Build x64 Rpm
+        run: pupnet Showcase.Pupnet.conf -r linux-x64 -y -k rpm -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.rpm
       
       - name: Publish Release
         uses: softprops/action-gh-release@v1
@@ -104,3 +119,4 @@ jobs:
             /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
             /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.appimage
             /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.deb
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.rpm
