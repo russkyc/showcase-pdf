@@ -81,18 +81,12 @@ jobs:
         uses: KageKirin/get-csproj-version@v0
         with:
           file: /home/runner/work/showcase-pdf/showcase-pdf/Showcase/Showcase.csproj
-          
-      - name: Install Flatpak Builder
-        run: sudo apt install flatpak flatpak-builder
 
       - name: Install Dpkg
         run: sudo apt install dpkg
 
       - name: Install Rpm
         run: sudo apt install rpm
-      
-      - name: Install Flathub
-        run: sudo flatpak install flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
       
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
