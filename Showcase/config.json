@@ -1,18 +1,5 @@
 {
   "duration": "1.0s",
   "transition": "Fade",
-  "displays": [
-    {
-      "id": 0,
-      "index": 1,
-      "name": "Display 2",
-      "width": 1640,
-      "height": 720,
-      "boundsX": 117,
-      "boundsY": 1080,
-      "scaling": 1.25,
-      "primary": false,
-      "enabled": true
-    }
-  ]
+  "displays": []
 }
