@@ -44,10 +44,11 @@ jobs:
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
-          name: ':tada: Showcase PDF Latest Release'
+          name: '🎉 Showcase PDF Release'
+          body: 'Latest binary releases for Showcase PDF'
           tag_name: latest
           files: |
-            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-x86.zip
-            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-x64.zip
-            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-installer-x86.exe
-            D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-installer-x64.exe
+            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-x86.zip
+            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-x64.zip
+            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-installer-x86.exe
+            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-installer-x64.exe
