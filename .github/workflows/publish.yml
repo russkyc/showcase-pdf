@@ -44,7 +44,8 @@ jobs:
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: Latest Release
+          name: ':tada: Showcase PDF Latest Release'
+          tag_name: latest
           files: |
             D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-x86.zip
             D:\a\showcase-pdf\showcase-pdf\Deploy\bin\showcase-pdf-win-x64.zip
