@@ -10,6 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
+  
   build-windows:
     permissions:
       contents: write
@@ -22,43 +23,38 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-          
+
       - name: Restore Dependencies
         run: dotnet restore
-        
+
       - name: Get version
         id: package_version
         uses: KageKirin/get-csproj-version@v0
         with:
           file: D:\a\showcase-pdf\showcase-pdf\Showcase\Showcase.csproj
-          
+
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
-        
+
       - name: Build x86 Zip
         run: pupnet -r win-x86 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.zip
-      
+
       - name: Build x64 Zip
         run: pupnet -r win-x64 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
 
       - name: Build x86 Setup
         run: pupnet -r win-x86 -y -k setup -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x86.exe
-        
+
       - name: Build x64 Setup
         run: pupnet -r win-x64 -y -k setup -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x64.exe
-  
+
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
           name: '🎉 Showcase PDF ${{ steps.package_version.outputs.version }} Windows Release'
-          body: 'Latest binary releases for Showcase PDF'
-          tag_name: 'v${{ steps.package_version.outputs.version }}'
-          files: |
-            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.zip
-            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
-            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x86.exe
-            D:/a/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x64.exe
-            
+          body: 'Latest windows builds for Showcase PDF'
+          tag_name: 'v${{ steps.package_version.outputs.version }}-win'
+          
   build-linux:
     permissions:
       contents: write
@@ -71,34 +67,47 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-
+          
       - name: Restore Dependencies
         run: dotnet restore
-
+        
       - name: Get version
         id: package_version
         uses: KageKirin/get-csproj-version@v0
         with:
-          file: D:\a\showcase-pdf\showcase-pdf\Showcase\Showcase.csproj
-
+          file: /home/runner/work/showcase-pdf/showcase-pdf/Showcase/Showcase.csproj
+          
       - name: Setup PupNet
         run: dotnet tool install -g KuiperZone.PupNet
-
+        
       - name: Build x86 Zip
-        run: pupnet -r win-x86 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.zip
-
+        run: pupnet -r linux-x86 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x86.zip
+      
       - name: Build x64 Zip
-        run: pupnet -r win-x64 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
+        run: pupnet -r linux-x64 -y -k zip -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.zip
 
-      - name: Build x86 Setup
-        run: pupnet -r win-x86 -y -k setup -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x86.exe
+      - name: Build x86 AppImage
+        run: pupnet -r linux-x86 -y -k appimage -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x86.appimage
+        
+      - name: Build x64 AppImage
+        run: pupnet -r linux-x64 -y -k appimage -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.appimage
 
-      - name: Build x64 Setup
-        run: pupnet -r win-x64 -y -k setup -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-win-${{ steps.package_version.outputs.version }}-installer-x64.exe
+      - name: Build x86 Deb
+        run: pupnet -r linux-x86 -y -k deb -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x86.deb
 
+      - name: Build x64 Deb
+        run: pupnet -r linux-x64 -y -k deb -v ${{ steps.package_version.outputs.version }} -o showcase-pdf-linux-${{ steps.package_version.outputs.version }}-x64.deb
+      
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
           name: '🎉 Showcase PDF ${{ steps.package_version.outputs.version }} Linux Release'
-          body: 'Latest binary releases for Showcase PDF'
-          tag_name: 'v${{ steps.package_version.outputs.version }}'
+          body: 'Latest Linux builds for Showcase PDF'
+          tag_name: 'v${{ steps.package_version.outputs.version }}-linux'
+          files: |
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.zip
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.zip
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.appimage
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.appimage
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x86.deb
+            /home/runner/work/showcase-pdf/showcase-pdf/Deploy/bin/showcase-pdf-win-${{ steps.package_version.outputs.version }}-x64.deb
