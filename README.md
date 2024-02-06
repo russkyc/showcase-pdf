@@ -19,6 +19,15 @@ It unlocks a new world of advanced, and seamless PDF presentations.
 
 <img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/about.png" style="width: 100%;" />
 
+#### Importing
+<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/import.gif" style="width: 100%;" />
+
+#### Presenting
+<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/presenting.gif" style="width: 100%;" />
+
+#### Transitions
+<img src="https://raw.githubusercontent.com/russkyc/showcase-pdf/master/.github/Images/transitions.gif" style="width: 100%;" />
+
 ## :tada: Special Thanks
 
 Special thanks to the awesome people at Jetbrains and AvaloniaUI for making
