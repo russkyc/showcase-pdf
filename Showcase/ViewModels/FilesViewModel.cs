@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
@@ -34,7 +35,6 @@ using Showcase.Models.Messages;
 using Showcase.Services.Datastore.Interfaces;
 using Showcase.Services.PdfReader.Interfaces;
 using Showcase.Services.WindowManager.Interfaces;
-using Showcase.Utilities;
 using Showcase.Utilities.Extensions;
 
 namespace Showcase.ViewModels;
@@ -116,6 +116,25 @@ public partial class FilesViewModel : ObservableObject
         WeakReferenceMessenger
             .Default
             .Send(new PresentationOpenedMessage(presentation));
+    }
+
+    [RelayCommand]
+    async Task RemovePresentation(ShowcasePresentation presentation)
+    {
+        var remove = await _windowFactory.CreateMessageDialog("Delete Presentation",$"Deleting {presentation.Name}, continue?","Yes","Cancel");
+        if (!remove) return;
+        
+        Directory.Delete(presentation.DataFolder, true);
+        await _presentationStore.DeletePresentation(presentation);
+
+        WeakReferenceMessenger
+            .Default
+            .Send(new PresentationDeletedMessage(presentation));
+        
+        List = _presentationStore
+            .GetPresentations()
+            .ToObservableCollection();
+
     }
 
     [RelayCommand]

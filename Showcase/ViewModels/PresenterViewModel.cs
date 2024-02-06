@@ -106,6 +106,10 @@ public partial class PresenterViewModel : ObservableObject
         WeakReferenceMessenger
             .Default
             .Register<DisabledDisplayMessage>(this, OnDisplayDisabled);
+        
+        WeakReferenceMessenger
+            .Default
+            .Register<PresentationDeletedMessage>(this, OnPresentationDeleted);
     }
 
     [RelayCommand]
@@ -178,6 +182,15 @@ public partial class PresenterViewModel : ObservableObject
 
     partial void OnLiveChanged(bool value)
     {
+        if (value)
+        {
+            if (!_displayManager.Displays.Any(display => display.Enabled))
+            {
+                _windowFactory.CreateMessageDialog("No Displays Enabled", "No displays are currently set to show the presentation, please enable at least one in order to present to that display.","Okay");
+                Live = false;
+                return;
+            }
+        }
         WeakReferenceMessenger
             .Default
             .Send(new LiveChangedMessage(value));
@@ -245,6 +258,15 @@ public partial class PresenterViewModel : ObservableObject
     private void OnSlideChanged(object recipient, SlideChangedMessage message)
     {
         ActiveSlide = message.Value;
+    }
+
+    private void OnPresentationDeleted(object recipient, PresentationDeletedMessage message)
+    {
+        if (ActivePresentation.Id == message.Value.Id)
+        {
+            ActivePresentation = null;
+            ActiveSlide = null;
+        }
     }
 
     private void OnPresentationOpened(object recipient, PresentationOpenedMessage message)

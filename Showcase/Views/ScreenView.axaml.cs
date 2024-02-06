@@ -39,10 +39,13 @@ public partial class ScreenView : Window
 
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
+        Close();
+    }
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
         WeakReferenceMessenger
             .Default
             .Send(new ClosedDisplayMessage(Index));
-        
-        Close();
     }
 }

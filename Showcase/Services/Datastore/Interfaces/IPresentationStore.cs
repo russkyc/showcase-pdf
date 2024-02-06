@@ -33,4 +33,5 @@ public interface IPresentationStore
     Task<bool> AddPresentation(ShowcasePresentation presentation);
     Task<bool> UpdatePresentation(ShowcasePresentation presentation);
     Task<bool> AddPresentations(IEnumerable<ShowcasePresentation> presentations);
+    Task<bool> DeletePresentation(ShowcasePresentation presentation);
 }

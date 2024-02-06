@@ -32,7 +32,12 @@ namespace Showcase.Services.Datastore;
 
 public class PresentationStore : IPresentationStore
 {
-    private IDataStore _dataStore = new DataStore($@"{Environment.CurrentDirectory}\data.json");
+    private IDataStore _dataStore;
+
+    public PresentationStore(IDataStore dataStore)
+    {
+        _dataStore = dataStore;
+    }
 
     public IEnumerable<ShowcasePresentation> GetPresentations()
     {
@@ -63,5 +68,11 @@ public class PresentationStore : IPresentationStore
     public async Task<bool> AddPresentations(IEnumerable<ShowcasePresentation> presentations)
     {
         return await _dataStore.GetCollection<ShowcasePresentation>().InsertManyAsync(presentations);
+    }
+
+    public async Task<bool> DeletePresentation(ShowcasePresentation presentation)
+    {
+        return await _dataStore.GetCollection<ShowcasePresentation>()
+            .DeleteOneAsync(presentation.Id);
     }
 }

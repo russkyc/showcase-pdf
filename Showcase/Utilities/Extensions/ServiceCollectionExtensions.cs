@@ -20,6 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System;
+using System.IO;
+using JsonFlatFileDataStore;
 using Microsoft.Extensions.DependencyInjection;
 using Showcase.Services.Configuration;
 using Showcase.Services.Configuration.Interfaces;
@@ -38,25 +41,35 @@ namespace Showcase.Utilities.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+
     public static IServiceCollection AddShowcaseViews(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddTransient(services => new FilesView()
-        {
-            DataContext = services.GetService<FilesViewModel>()
-        });
-        serviceCollection.AddTransient(services => new PresenterView()
-        {
-            DataContext = services.GetService<PresenterViewModel>()
-        });
-        serviceCollection.AddTransient(services => new ScreenView()
-        {
-            DataContext = services.GetService<ScreenViewModel>()
-        });
-        serviceCollection.AddTransient(services => new SettingsView()
-        {
-            DataContext = services.GetService<SettingsViewModel>()
-        });
+        serviceCollection.AddTransient(
+            services => new FilesView()
+            {
+                DataContext = services.GetService<FilesViewModel>()
+            });
+
+        serviceCollection.AddTransient(
+            services => new PresenterView()
+            {
+                DataContext = services.GetService<PresenterViewModel>()
+            });
+
+        serviceCollection.AddTransient(
+            services => new ScreenView()
+            {
+                DataContext = services.GetService<ScreenViewModel>()
+            });
+
+        serviceCollection.AddTransient(
+            services => new SettingsView()
+            {
+                DataContext = services.GetService<SettingsViewModel>()
+            });
+
         serviceCollection.AddTransient(_ => new AboutView());
+
         return serviceCollection;
     }
 
@@ -67,15 +80,18 @@ public static class ServiceCollectionExtensions
                 services.GetService<IPdfManager>(),
                 services.GetService<IWindowFactory>(),
                 services.GetService<IPresentationStore>()));
+
         serviceCollection.AddSingleton(
             services => new SettingsViewModel(
                 services.GetService<IDisplayManager>()));
+
         serviceCollection.AddSingleton(
             services => new PresenterViewModel(
                 services.GetService<IAppConfig>(),
                 services.GetService<IWindowFactory>(),
                 services.GetService<IDisplayManager>(),
                 services.GetService<IPresentationStore>()));
+
         serviceCollection.AddSingleton(_ => new ScreenViewModel());
 
         return serviceCollection;
@@ -83,11 +99,31 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddShowcaseServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<IAppConfig, AppConfig>(_ => new AppConfig("config.json"));
-        serviceCollection.AddSingleton<IPresentationStore, PresentationStore>();
+        serviceCollection.AddSingleton<IAppConfig, AppConfig>(
+            _ => new AppConfig(
+                Path.Combine(
+                    Environment.CurrentDirectory,"config.json")));
+
+        serviceCollection.AddSingleton<IPresentationStore, PresentationStore>(
+            _ => new PresentationStore(
+                new DataStore(
+                    Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "Russkyc",
+                        "ShowcasePdf", 
+                        "data.json"))));
+
+        serviceCollection.AddSingleton<IPdfManager, PdfManager>(
+            _ => new PdfManager(
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Russkyc",
+                    "ShowcasePdf",
+                    "Presentations")));
+
         serviceCollection.AddSingleton<IDisplayManager, DisplayManager>();
+
         serviceCollection.AddSingleton<IWindowFactory, WindowFactory>();
-        serviceCollection.AddSingleton<IPdfManager, PdfManager>();
 
         return serviceCollection;
     }

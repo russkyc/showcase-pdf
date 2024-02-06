@@ -34,6 +34,14 @@ namespace Showcase.Services.PdfReader;
 
 public class PdfManager : IPdfManager
 {
+    private readonly string _dataFolder;
+
+    public PdfManager(string dataFolder)
+    {
+        _dataFolder = dataFolder;
+        _dataFolder.CreateDirectoryIfNotExists();
+    }
+
     public async Task<ShowcasePresentation> GetPresentation(string source)
     {
         var path = source;
@@ -46,7 +54,7 @@ public class PdfManager : IPdfManager
             presentation.Name = name;
             presentation.Path = path;
             presentation.Md5 = md5;
-            presentation.DataFolder = @$"{Environment.CurrentDirectory}\Presentations\{name}\";
+            presentation.DataFolder = Path.Combine(_dataFolder,name);
             
             var bytes = await File.ReadAllBytesAsync(source);
             

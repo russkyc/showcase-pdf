@@ -20,18 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Showcase.Models.Entities;
 
-namespace Showcase.Services.WindowManager.Interfaces;
+namespace Showcase.Models.Messages;
 
-public interface IWindowFactory
+public class PresentationDeletedMessage : ValueChangedMessage<ShowcasePresentation>
 {
-    void CreatePresenterWindow();
-    void CreateScreenWindow(Display display);
-    void CreateStartupWindow();
-    void CreateAboutWindow();
-    void CreateSettingsWindow();
-    Task<bool> CreateMessageDialog(string title, string content, string primaryButtonText, string closeButtonText);
-    Task CreateMessageDialog(string title, string content, string primaryButtonText);
+    public PresentationDeletedMessage(ShowcasePresentation value) : base(value)
+    {
+    }
 }
