@@ -79,7 +79,7 @@ public class PdfManager : IPdfManager
                            .ConfigureAwait(false))
         {
             presentation.DataFolder.CreateDirectoryIfNotExists();
-            var filePath = $"{presentation.DataFolder}{Guid.NewGuid()}";
+            var filePath = Path.Combine(presentation.DataFolder,Guid.NewGuid().ToString());
 
             await using var stream = new FileStream(filePath, FileMode.Create);
             await Task.Run(() =>
