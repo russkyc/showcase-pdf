@@ -77,11 +77,6 @@
                         <fluent:SymbolIcon Symbol="Delete" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Show In Folder">
-                    <MenuItem.Icon>
-                        <fluent:SymbolIcon Symbol="Folder" />
-                    </MenuItem.Icon>
-                </MenuItem>
             </MenuFlyout>
         </Button.ContextFlyout>
     </Button>
