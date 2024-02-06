@@ -101,17 +101,29 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddSingleton<IAppConfig, AppConfig>(
             _ => new AppConfig(
-                Path.Combine(Environment.CurrentDirectory, "config.json")));
+                Path.Combine(
+                    Environment.CurrentDirectory,"config.json")));
 
         serviceCollection.AddSingleton<IPresentationStore, PresentationStore>(
             _ => new PresentationStore(
-                new DataStore(Path.Combine(Environment.CurrentDirectory, "data.json"))));
+                new DataStore(
+                    Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "Russkyc",
+                        "ShowcasePdf", 
+                        "data.json"))));
+
+        serviceCollection.AddSingleton<IPdfManager, PdfManager>(
+            _ => new PdfManager(
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Russkyc",
+                    "ShowcasePdf",
+                    "Presentations")));
 
         serviceCollection.AddSingleton<IDisplayManager, DisplayManager>();
 
         serviceCollection.AddSingleton<IWindowFactory, WindowFactory>();
-
-        serviceCollection.AddSingleton<IPdfManager, PdfManager>();
 
         return serviceCollection;
     }
