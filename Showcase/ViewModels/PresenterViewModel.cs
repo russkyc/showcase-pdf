@@ -182,6 +182,15 @@ public partial class PresenterViewModel : ObservableObject
 
     partial void OnLiveChanged(bool value)
     {
+        if (value)
+        {
+            if (!_displayManager.Displays.Any(display => display.Enabled))
+            {
+                _windowFactory.CreateMessageDialog("No Displays Enabled", "No displays are currently set to show the presentation, please enable at least one in order to present to that display.","Okay");
+                Live = false;
+                return;
+            }
+        }
         WeakReferenceMessenger
             .Default
             .Send(new LiveChangedMessage(value));

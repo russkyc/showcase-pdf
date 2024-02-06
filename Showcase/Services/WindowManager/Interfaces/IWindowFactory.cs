@@ -33,4 +33,5 @@ public interface IWindowFactory
     void CreateAboutWindow();
     void CreateSettingsWindow();
     Task<bool> CreateMessageDialog(string title, string content, string primaryButtonText, string closeButtonText);
+    Task CreateMessageDialog(string title, string content, string primaryButtonText);
 }

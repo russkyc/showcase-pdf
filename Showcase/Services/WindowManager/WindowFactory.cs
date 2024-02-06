@@ -144,4 +144,15 @@ public class WindowFactory : IWindowFactory
         var response = await dialog.ShowAsync();
         return response == ContentDialogResult.Primary;
     }
+    
+    public async Task CreateMessageDialog(string title, string content, string primaryButtonText)
+    {
+        var dialog = new ContentDialog()
+        {
+            Title = title,
+            Content = content,
+            PrimaryButtonText = primaryButtonText
+        };
+        await dialog.ShowAsync();
+    }
 }
