@@ -69,4 +69,10 @@ public class PresentationStore : IPresentationStore
     {
         return await _dataStore.GetCollection<ShowcasePresentation>().InsertManyAsync(presentations);
     }
+
+    public async Task<bool> DeletePresentation(ShowcasePresentation presentation)
+    {
+        return await _dataStore.GetCollection<ShowcasePresentation>()
+            .DeleteOneAsync(presentation.Id);
+    }
 }

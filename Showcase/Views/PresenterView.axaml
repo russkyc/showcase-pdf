@@ -292,6 +292,7 @@
                             <StackPanel
                                 Margin="12"
                                 VerticalAlignment="Top"
+                                IsVisible="{Binding ActivePresentation, Converter={x:Static ObjectConverters.IsNotNull}}"
                                 Orientation="Horizontal"
                                 Spacing="6" />
                         </ItemsPanelTemplate>

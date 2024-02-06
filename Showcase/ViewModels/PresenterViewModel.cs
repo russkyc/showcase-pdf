@@ -106,6 +106,10 @@ public partial class PresenterViewModel : ObservableObject
         WeakReferenceMessenger
             .Default
             .Register<DisabledDisplayMessage>(this, OnDisplayDisabled);
+        
+        WeakReferenceMessenger
+            .Default
+            .Register<PresentationDeletedMessage>(this, OnPresentationDeleted);
     }
 
     [RelayCommand]
@@ -245,6 +249,15 @@ public partial class PresenterViewModel : ObservableObject
     private void OnSlideChanged(object recipient, SlideChangedMessage message)
     {
         ActiveSlide = message.Value;
+    }
+
+    private void OnPresentationDeleted(object recipient, PresentationDeletedMessage message)
+    {
+        if (ActivePresentation.Id == message.Value.Id)
+        {
+            ActivePresentation = null;
+            ActiveSlide = null;
+        }
     }
 
     private void OnPresentationOpened(object recipient, PresentationOpenedMessage message)

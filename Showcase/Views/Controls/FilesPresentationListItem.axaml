@@ -6,6 +6,7 @@
     xmlns:converters="clr-namespace:Showcase.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:entities="clr-namespace:Showcase.Models.Entities"
+    xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Showcase.Models"
     xmlns:viewModels1="clr-namespace:Showcase.ViewModels"
@@ -13,11 +14,6 @@
     d:DesignWidth="400"
     x:DataType="entities:ShowcasePresentation"
     mc:Ignorable="d">
-    <ToolTip.Tip>
-        <StackPanel>
-            <TextBlock Text="{Binding Name}" />
-        </StackPanel>
-    </ToolTip.Tip>
     <Button
         Padding="0"
         HorizontalAlignment="Stretch"
@@ -71,5 +67,22 @@
                 </StackPanel>
             </Grid>
         </Grid>
+        <Button.ContextFlyout>
+            <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
+                <MenuItem
+                    Command="{Binding ((viewModels1:FilesViewModel)DataContext).RemovePresentationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=views:FilesView}}"
+                    CommandParameter="{Binding}"
+                    Header="Delete">
+                    <MenuItem.Icon>
+                        <fluent:SymbolIcon Symbol="Delete" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Show In Folder">
+                    <MenuItem.Icon>
+                        <fluent:SymbolIcon Symbol="Folder" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuFlyout>
+        </Button.ContextFlyout>
     </Button>
 </UserControl>

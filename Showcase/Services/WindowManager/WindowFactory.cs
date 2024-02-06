@@ -22,7 +22,9 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
+using FluentAvalonia.UI.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Showcase.Models.Entities;
 using Showcase.Services.WindowManager.Interfaces;
@@ -128,5 +130,18 @@ public class WindowFactory : IWindowFactory
     {
         var window = _serviceProvider.GetService<SettingsView>();
         window.ShowDialog(Application.Current.GetActiveWindow());
+    }
+
+    public async Task<bool> CreateMessageDialog(string title, string content, string primaryButtonText, string closeButtonText)
+    {
+        var dialog = new ContentDialog()
+        {
+            Title = title,
+            Content = content,
+            PrimaryButtonText = primaryButtonText,
+            CloseButtonText = closeButtonText
+        };
+        var response = await dialog.ShowAsync();
+        return response == ContentDialogResult.Primary;
     }
 }

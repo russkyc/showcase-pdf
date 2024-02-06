@@ -20,18 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Showcase.Models;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Showcase.Models.Entities;
 
-namespace Showcase.Services.Datastore.Interfaces;
+namespace Showcase.Models.Messages;
 
-public interface IPresentationStore
+public class PresentationDeletedMessage : ValueChangedMessage<ShowcasePresentation>
 {
-    IEnumerable<ShowcasePresentation> GetPresentations();
-    Task<bool> AddPresentation(ShowcasePresentation presentation);
-    Task<bool> UpdatePresentation(ShowcasePresentation presentation);
-    Task<bool> AddPresentations(IEnumerable<ShowcasePresentation> presentations);
-    Task<bool> DeletePresentation(ShowcasePresentation presentation);
+    public PresentationDeletedMessage(ShowcasePresentation value) : base(value)
+    {
+    }
 }

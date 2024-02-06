@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Threading.Tasks;
 using Showcase.Models.Entities;
 
 namespace Showcase.Services.WindowManager.Interfaces;
@@ -31,4 +32,5 @@ public interface IWindowFactory
     void CreateStartupWindow();
     void CreateAboutWindow();
     void CreateSettingsWindow();
+    Task<bool> CreateMessageDialog(string title, string content, string primaryButtonText, string closeButtonText);
 }
